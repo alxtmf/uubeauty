@@ -1,0 +1,302 @@
+2017-10-26 22:38:26,686 ERROR r.p.u.Main [main] Бот. Начало работы
+2017-10-26 22:38:26,701 ERROR r.p.u.AppEnv [main] EMPLOYEE_FILE = C:\Users\altmf\Documents\NetBeansProjects\uubeauty2\uubeauty\src\main\resources\xml\AllRootLevelTypeDefinitions-3.xml
+2017-10-26 22:38:26,701 ERROR r.p.u.AppEnv [main] PROXY_USE = false
+2017-10-26 22:38:26,701 ERROR r.p.u.AppEnv [main] SERVICE_FILE = C:\Users\altmf\Documents\NetBeansProjects\uubeauty2\uubeauty\src\main\resources\xml\AllRootLevelTypeDefinitions-2.xml
+2017-10-26 22:38:26,701 ERROR r.p.u.AppEnv [main] ROOT_PATH = C:\Users\altmf\Documents\NetBeansProjects\uubeauty2\uubeauty
+2017-10-26 22:38:27,138 INFO CustomDocumentMarshallerImpl [main] got associated class : class ru.p03.uubeauty.bot.schema.InfoMessageList, docTypeCode == SERVICE_INFO
+2017-10-26 22:38:27,138 DEBUG j.x.bind [main] Trying to locate ru/p03/uubeauty/bot/schema/jaxb.properties
+2017-10-26 22:38:27,138 DEBUG j.x.bind [main]   not found
+2017-10-26 22:38:27,138 DEBUG j.x.bind [main] Checking system property javax.xml.bind.context.factory
+2017-10-26 22:38:27,138 DEBUG j.x.bind [main]   not found
+2017-10-26 22:38:27,138 DEBUG j.x.bind [main] Checking system property javax.xml.bind.JAXBContext
+2017-10-26 22:38:27,138 DEBUG j.x.bind [main]   not found
+2017-10-26 22:38:27,138 DEBUG j.x.bind [main] Unable to find from OSGi: javax.xml.bind.JAXBContext
+2017-10-26 22:38:27,138 DEBUG j.x.bind [main] Checking META-INF/services
+2017-10-26 22:38:27,138 DEBUG j.x.bind [main] Unable to find: META-INF/services/javax.xml.bind.JAXBContext
+2017-10-26 22:38:27,138 DEBUG j.x.bind [main] Trying to create the platform default provider
+2017-10-26 22:38:27,138 DEBUG j.x.bind [main] Trying to load com.sun.xml.internal.bind.v2.ContextFactory
+2017-10-26 22:38:27,138 DEBUG j.x.bind [main] loaded com.sun.xml.internal.bind.v2.ContextFactory from jar:file:/C:/Program%20Files/Java/jdk1.8.0_131/jre/lib/rt.jar!/com/sun/xml/internal/bind/v2/ContextFactory.class
+2017-10-26 22:38:27,138 DEBUG c.s.x.i.b.v.ContextFactory [main] Property com.sun.xml.internal.bind.XmlAccessorFactoryis not active.  Using JAXB's implementation
+2017-10-26 22:38:27,169 DEBUG c.s.x.i.b.v.r.r.o.OptimizedAccessorFactory [main] Using optimized Accessor for protected java.util.List ru.p03.uubeauty.bot.schema.InfoMessageList.infoMessage
+2017-10-26 22:38:27,169 DEBUG c.s.x.i.b.v.r.r.o.OptimizedAccessorFactory [main] Using optimized Accessor for protected java.lang.String ru.p03.uubeauty.bot.schema.InfoMessage.name
+2017-10-26 22:38:27,169 DEBUG c.s.x.i.b.v.r.r.o.OptimizedAccessorFactory [main] Using optimized Accessor for protected java.lang.String ru.p03.uubeauty.bot.schema.InfoMessage.name
+2017-10-26 22:38:27,169 DEBUG c.s.x.i.b.v.r.r.o.OptimizedAccessorFactory [main] Using optimized Accessor for protected java.lang.String ru.p03.uubeauty.bot.schema.InfoMessage.code
+2017-10-26 22:38:27,169 DEBUG c.s.x.i.b.v.r.r.o.OptimizedAccessorFactory [main] Using optimized Accessor for protected java.lang.String ru.p03.uubeauty.bot.schema.InfoMessage.code
+2017-10-26 22:38:27,169 DEBUG c.s.x.i.b.v.r.r.o.OptimizedAccessorFactory [main] Using optimized Accessor for protected java.lang.String ru.p03.uubeauty.bot.schema.InfoMessage.message
+2017-10-26 22:38:27,169 DEBUG c.s.x.i.b.v.r.r.o.OptimizedAccessorFactory [main] Using optimized Accessor for protected java.lang.String ru.p03.uubeauty.bot.schema.InfoMessage.message
+2017-10-26 22:38:27,185 INFO JsonDocumentMarshallerImpl [main] got associated class : class ru.p03.uubeauty.bot.schema.Action, docTypeCode == Action
+2017-10-26 22:38:27,185 DEBUG j.x.bind [main] Trying to locate ru/p03/uubeauty/bot/schema/jaxb.properties
+2017-10-26 22:38:27,185 DEBUG j.x.bind [main]   not found
+2017-10-26 22:38:27,185 DEBUG j.x.bind [main] Checking system property javax.xml.bind.context.factory
+2017-10-26 22:38:27,185 DEBUG j.x.bind [main]   not found
+2017-10-26 22:38:27,185 DEBUG j.x.bind [main] Checking system property javax.xml.bind.JAXBContext
+2017-10-26 22:38:27,185 DEBUG j.x.bind [main]   not found
+2017-10-26 22:38:27,185 DEBUG j.x.bind [main] Unable to find from OSGi: javax.xml.bind.JAXBContext
+2017-10-26 22:38:27,185 DEBUG j.x.bind [main] Checking META-INF/services
+2017-10-26 22:38:27,185 DEBUG j.x.bind [main] Unable to find: META-INF/services/javax.xml.bind.JAXBContext
+2017-10-26 22:38:27,185 DEBUG j.x.bind [main] Trying to create the platform default provider
+2017-10-26 22:38:27,185 DEBUG j.x.bind [main] Trying to load com.sun.xml.internal.bind.v2.ContextFactory
+2017-10-26 22:38:27,185 DEBUG j.x.bind [main] loaded com.sun.xml.internal.bind.v2.ContextFactory from jar:file:/C:/Program%20Files/Java/jdk1.8.0_131/jre/lib/rt.jar!/com/sun/xml/internal/bind/v2/ContextFactory.class
+2017-10-26 22:38:27,185 DEBUG c.s.x.i.b.v.ContextFactory [main] Property com.sun.xml.internal.bind.XmlAccessorFactoryis not active.  Using JAXB's implementation
+2017-10-26 22:38:27,185 DEBUG c.s.x.i.b.v.r.r.o.OptimizedAccessorFactory [main] Using optimized Accessor for protected java.lang.String ru.p03.uubeauty.bot.schema.Action.name
+2017-10-26 22:38:27,185 DEBUG c.s.x.i.b.v.r.r.o.OptimizedAccessorFactory [main] Using optimized Accessor for protected java.lang.String ru.p03.uubeauty.bot.schema.Action.name
+2017-10-26 22:38:27,185 DEBUG c.s.x.i.b.v.r.r.o.OptimizedAccessorFactory [main] Using optimized Accessor for protected java.lang.String ru.p03.uubeauty.bot.schema.Action.id
+2017-10-26 22:38:27,185 DEBUG c.s.x.i.b.v.r.r.o.OptimizedAccessorFactory [main] Using optimized Accessor for protected java.lang.String ru.p03.uubeauty.bot.schema.Action.id
+2017-10-26 22:38:27,185 DEBUG c.s.x.i.b.v.r.r.o.OptimizedAccessorFactory [main] Using optimized Accessor for protected java.lang.String ru.p03.uubeauty.bot.schema.Action.value
+2017-10-26 22:38:27,185 DEBUG c.s.x.i.b.v.r.r.o.OptimizedAccessorFactory [main] Using optimized Accessor for protected java.lang.String ru.p03.uubeauty.bot.schema.Action.value
+2017-10-26 22:38:27,185 DEBUG c.s.x.i.b.v.r.r.o.OptimizedAccessorFactory [main] Using optimized Accessor for protected java.lang.String ru.p03.uubeauty.bot.schema.Action.command
+2017-10-26 22:38:27,185 DEBUG c.s.x.i.b.v.r.r.o.OptimizedAccessorFactory [main] Using optimized Accessor for protected java.lang.String ru.p03.uubeauty.bot.schema.Action.command
+2017-10-26 22:38:27,185 INFO CustomDocumentMarshallerImpl [main] got associated class : class ru.p03.uubeauty.bot.schema.InfoMessageList, docTypeCode == EMPLOYEE_LIST
+2017-10-26 22:38:27,185 DEBUG j.x.bind [main] Trying to locate ru/p03/uubeauty/bot/schema/jaxb.properties
+2017-10-26 22:38:27,185 DEBUG j.x.bind [main]   not found
+2017-10-26 22:38:27,185 DEBUG j.x.bind [main] Checking system property javax.xml.bind.context.factory
+2017-10-26 22:38:27,185 DEBUG j.x.bind [main]   not found
+2017-10-26 22:38:27,185 DEBUG j.x.bind [main] Checking system property javax.xml.bind.JAXBContext
+2017-10-26 22:38:27,185 DEBUG j.x.bind [main]   not found
+2017-10-26 22:38:27,185 DEBUG j.x.bind [main] Unable to find from OSGi: javax.xml.bind.JAXBContext
+2017-10-26 22:38:27,185 DEBUG j.x.bind [main] Checking META-INF/services
+2017-10-26 22:38:27,185 DEBUG j.x.bind [main] Unable to find: META-INF/services/javax.xml.bind.JAXBContext
+2017-10-26 22:38:27,185 DEBUG j.x.bind [main] Trying to create the platform default provider
+2017-10-26 22:38:27,185 DEBUG j.x.bind [main] Trying to load com.sun.xml.internal.bind.v2.ContextFactory
+2017-10-26 22:38:27,185 DEBUG j.x.bind [main] loaded com.sun.xml.internal.bind.v2.ContextFactory from jar:file:/C:/Program%20Files/Java/jdk1.8.0_131/jre/lib/rt.jar!/com/sun/xml/internal/bind/v2/ContextFactory.class
+2017-10-26 22:38:27,185 DEBUG c.s.x.i.b.v.ContextFactory [main] Property com.sun.xml.internal.bind.XmlAccessorFactoryis not active.  Using JAXB's implementation
+2017-10-26 22:38:27,185 DEBUG c.s.x.i.b.v.r.r.o.OptimizedAccessorFactory [main] Using optimized Accessor for protected java.util.List ru.p03.uubeauty.bot.schema.InfoMessageList.infoMessage
+2017-10-26 22:38:27,185 DEBUG c.s.x.i.b.v.r.r.o.OptimizedAccessorFactory [main] Using optimized Accessor for protected java.lang.String ru.p03.uubeauty.bot.schema.InfoMessage.name
+2017-10-26 22:38:27,185 DEBUG c.s.x.i.b.v.r.r.o.OptimizedAccessorFactory [main] Using optimized Accessor for protected java.lang.String ru.p03.uubeauty.bot.schema.InfoMessage.name
+2017-10-26 22:38:27,185 DEBUG c.s.x.i.b.v.r.r.o.OptimizedAccessorFactory [main] Using optimized Accessor for protected java.lang.String ru.p03.uubeauty.bot.schema.InfoMessage.code
+2017-10-26 22:38:27,185 DEBUG c.s.x.i.b.v.r.r.o.OptimizedAccessorFactory [main] Using optimized Accessor for protected java.lang.String ru.p03.uubeauty.bot.schema.InfoMessage.code
+2017-10-26 22:38:27,185 DEBUG c.s.x.i.b.v.r.r.o.OptimizedAccessorFactory [main] Using optimized Accessor for protected java.lang.String ru.p03.uubeauty.bot.schema.InfoMessage.message
+2017-10-26 22:38:27,185 DEBUG c.s.x.i.b.v.r.r.o.OptimizedAccessorFactory [main] Using optimized Accessor for protected java.lang.String ru.p03.uubeauty.bot.schema.InfoMessage.message
+2017-10-26 22:39:12,255 DEBUG c.s.x.i.b.v.u.XmlFactory [main] SAXParserFactory instance: com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl@18a3962d
+2017-10-26 22:39:12,271 ERROR JaxbUtil [main] Unmarshaling failed.
+javax.xml.bind.UnmarshalException: unexpected element (uri:"p03:bot", local:"infoMessageList"). Expected elements are <{}infoMessageList>
+	at com.sun.xml.internal.bind.v2.runtime.unmarshaller.UnmarshallingContext.handleEvent(UnmarshallingContext.java:726) ~[?:1.8.0_131]
+	at com.sun.xml.internal.bind.v2.runtime.unmarshaller.Loader.reportError(Loader.java:247) ~[?:1.8.0_131]
+	at com.sun.xml.internal.bind.v2.runtime.unmarshaller.Loader.reportError(Loader.java:242) ~[?:1.8.0_131]
+	at com.sun.xml.internal.bind.v2.runtime.unmarshaller.Loader.reportUnexpectedChildElement(Loader.java:109) ~[?:1.8.0_131]
+	at com.sun.xml.internal.bind.v2.runtime.unmarshaller.UnmarshallingContext$DefaultRootLoader.childElement(UnmarshallingContext.java:1131) ~[?:1.8.0_131]
+	at com.sun.xml.internal.bind.v2.runtime.unmarshaller.UnmarshallingContext._startElement(UnmarshallingContext.java:556) ~[?:1.8.0_131]
+	at com.sun.xml.internal.bind.v2.runtime.unmarshaller.UnmarshallingContext.startElement(UnmarshallingContext.java:538) ~[?:1.8.0_131]
+	at com.sun.xml.internal.bind.v2.runtime.unmarshaller.SAXConnector.startElement(SAXConnector.java:153) ~[?:1.8.0_131]
+	at com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.startElement(AbstractSAXParser.java:509) ~[?:1.8.0_131]
+	at com.sun.org.apache.xerces.internal.impl.XMLNSDocumentScannerImpl.scanStartElement(XMLNSDocumentScannerImpl.java:374) ~[?:1.8.0_131]
+	at com.sun.org.apache.xerces.internal.impl.XMLNSDocumentScannerImpl$NSContentDriver.scanRootElementHook(XMLNSDocumentScannerImpl.java:613) ~[?:1.8.0_131]
+	at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl$FragmentContentDriver.next(XMLDocumentFragmentScannerImpl.java:3132) ~[?:1.8.0_131]
+	at com.sun.org.apache.xerces.internal.impl.XMLDocumentScannerImpl$PrologDriver.next(XMLDocumentScannerImpl.java:852) ~[?:1.8.0_131]
+	at com.sun.org.apache.xerces.internal.impl.XMLDocumentScannerImpl.next(XMLDocumentScannerImpl.java:602) ~[?:1.8.0_131]
+	at com.sun.org.apache.xerces.internal.impl.XMLNSDocumentScannerImpl.next(XMLNSDocumentScannerImpl.java:112) ~[?:1.8.0_131]
+	at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl.scanDocument(XMLDocumentFragmentScannerImpl.java:505) ~[?:1.8.0_131]
+	at com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(XML11Configuration.java:841) ~[?:1.8.0_131]
+	at com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(XML11Configuration.java:770) ~[?:1.8.0_131]
+	at com.sun.org.apache.xerces.internal.parsers.XMLParser.parse(XMLParser.java:141) ~[?:1.8.0_131]
+	at com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.parse(AbstractSAXParser.java:1213) ~[?:1.8.0_131]
+	at com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser.parse(SAXParserImpl.java:643) ~[?:1.8.0_131]
+	at com.sun.xml.internal.bind.v2.runtime.unmarshaller.UnmarshallerImpl.unmarshal0(UnmarshallerImpl.java:243) ~[?:1.8.0_131]
+	at com.sun.xml.internal.bind.v2.runtime.unmarshaller.UnmarshallerImpl.unmarshal(UnmarshallerImpl.java:214) ~[?:1.8.0_131]
+	at javax.xml.bind.helpers.AbstractUnmarshallerImpl.unmarshal(AbstractUnmarshallerImpl.java:157) ~[?:1.8.0_131]
+	at javax.xml.bind.helpers.AbstractUnmarshallerImpl.unmarshal(AbstractUnmarshallerImpl.java:214) ~[?:1.8.0_131]
+	at ru.p03.common.util.JaxbUtil.unmarshal(JaxbUtil.java:55) [classes/:?]
+	at ru.p03.uubeautyi.bot.document.spi.CustomDocumentMarshallerImpl.unmarshal(CustomDocumentMarshallerImpl.java:84) [classes/:?]
+	at ru.p03.uubeautyi.bot.document.spi.DocumentMarshalerAggregator.unmarshal(DocumentMarshalerAggregator.java:42) [classes/:?]
+	at ru.p03.uubeauty.AppEnv.initManagers(AppEnv.java:84) [classes/:?]
+	at ru.p03.uubeauty.AppEnv.init(AppEnv.java:185) [classes/:?]
+	at ru.p03.uubeauty.AppEnv.getContext(AppEnv.java:199) [classes/:?]
+	at ru.p03.uubeauty.Main.main(Main.java:35) [classes/:?]
+2017-10-26 22:39:24,891 DEBUG c.g.i.i.u.Stopwatch [main] Module execution: 93ms
+2017-10-26 22:39:24,891 DEBUG c.g.i.i.u.Stopwatch [main] Interceptors creation: 0ms
+2017-10-26 22:39:24,891 DEBUG c.g.i.i.u.Stopwatch [main] TypeListeners & ProvisionListener creation: 0ms
+2017-10-26 22:39:24,907 DEBUG c.g.i.i.u.Stopwatch [main] Scopes creation: 16ms
+2017-10-26 22:39:24,907 DEBUG c.g.i.i.u.Stopwatch [main] Converters creation: 0ms
+2017-10-26 22:39:24,907 DEBUG c.g.i.i.u.Stopwatch [main] Binding creation: 0ms
+2017-10-26 22:39:24,907 DEBUG c.g.i.i.u.Stopwatch [main] Module annotated method scanners creation: 0ms
+2017-10-26 22:39:24,907 DEBUG c.g.i.i.u.Stopwatch [main] Private environment creation: 0ms
+2017-10-26 22:39:24,907 DEBUG c.g.i.i.u.Stopwatch [main] Injector construction: 0ms
+2017-10-26 22:39:24,907 DEBUG c.g.i.i.u.Stopwatch [main] Binding initialization: 0ms
+2017-10-26 22:39:24,907 DEBUG c.g.i.i.u.Stopwatch [main] Binding indexing: 0ms
+2017-10-26 22:39:24,907 DEBUG c.g.i.i.u.Stopwatch [main] Collecting injection requests: 0ms
+2017-10-26 22:39:24,923 DEBUG c.g.i.i.BytecodeGen [main] Loading class org.telegram.telegrambots.updatesreceivers.DefaultBotSession FastClass with sun.misc.Launcher$AppClassLoader@18b4aac2
+2017-10-26 22:39:24,969 DEBUG c.g.i.i.BytecodeGen [main] Loading class org.telegram.telegrambots.updatesreceivers.DefaultWebhook FastClass with sun.misc.Launcher$AppClassLoader@18b4aac2
+2017-10-26 22:39:24,969 DEBUG c.g.i.i.u.Stopwatch [main] Binding validation: 62ms
+2017-10-26 22:39:24,969 DEBUG c.g.i.i.u.Stopwatch [main] Static validation: 0ms
+2017-10-26 22:39:24,969 DEBUG c.g.i.i.u.Stopwatch [main] Instance member validation: 0ms
+2017-10-26 22:39:24,969 DEBUG c.g.i.i.u.Stopwatch [main] Provider verification: 0ms
+2017-10-26 22:39:24,969 DEBUG c.g.i.i.u.Stopwatch [main] Static member injection: 0ms
+2017-10-26 22:39:24,969 DEBUG c.g.i.i.u.Stopwatch [main] Instance injection: 0ms
+2017-10-26 22:39:24,969 DEBUG c.g.i.i.u.Stopwatch [main] Preloading singletons: 0ms
+2017-10-26 22:39:24,969 DEBUG c.g.i.i.BytecodeGen [main] Loading class org.telegram.telegrambots.bots.DefaultBotOptions FastClass with sun.misc.Launcher$AppClassLoader@18b4aac2
+2017-10-26 22:39:25,281 DEBUG o.a.h.c.p.RequestAddCookies [main] CookieSpec selected: default
+2017-10-26 22:39:25,297 DEBUG o.a.h.c.p.RequestAuthCache [main] Auth cache not set in the context
+2017-10-26 22:39:25,297 DEBUG o.a.h.i.c.PoolingHttpClientConnectionManager [main] Connection request: [route: {s}->https://api.telegram.org:443][total kept alive: 0; route allocated: 0 of 2; total allocated: 0 of 20]
+2017-10-26 22:39:25,297 DEBUG o.a.h.i.c.PoolingHttpClientConnectionManager [main] Connection leased: [id: 0][route: {s}->https://api.telegram.org:443][total kept alive: 0; route allocated: 1 of 2; total allocated: 1 of 20]
+2017-10-26 22:39:25,297 DEBUG o.a.h.i.e.MainClientExec [main] Opening connection {s}->https://api.telegram.org:443
+2017-10-26 22:39:25,344 DEBUG o.a.h.i.c.DefaultHttpClientConnectionOperator [main] Connecting to api.telegram.org/149.154.167.198:443
+2017-10-26 22:39:25,344 DEBUG o.a.h.c.s.SSLConnectionSocketFactory [main] Connecting socket to api.telegram.org/149.154.167.198:443 with timeout 0
+2017-10-26 22:39:25,484 DEBUG o.a.h.c.s.SSLConnectionSocketFactory [main] Enabled protocols: [TLSv1, TLSv1.1, TLSv1.2]
+2017-10-26 22:39:25,484 DEBUG o.a.h.c.s.SSLConnectionSocketFactory [main] Enabled cipher suites:[TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, TLS_RSA_WITH_AES_128_CBC_SHA256, TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA256, TLS_ECDH_RSA_WITH_AES_128_CBC_SHA256, TLS_DHE_RSA_WITH_AES_128_CBC_SHA256, TLS_DHE_DSS_WITH_AES_128_CBC_SHA256, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, TLS_RSA_WITH_AES_128_CBC_SHA, TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA, TLS_ECDH_RSA_WITH_AES_128_CBC_SHA, TLS_DHE_RSA_WITH_AES_128_CBC_SHA, TLS_DHE_DSS_WITH_AES_128_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, TLS_RSA_WITH_AES_128_GCM_SHA256, TLS_ECDH_ECDSA_WITH_AES_128_GCM_SHA256, TLS_ECDH_RSA_WITH_AES_128_GCM_SHA256, TLS_DHE_RSA_WITH_AES_128_GCM_SHA256, TLS_DHE_DSS_WITH_AES_128_GCM_SHA256, TLS_ECDHE_ECDSA_WITH_3DES_EDE_CBC_SHA, TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA, SSL_RSA_WITH_3DES_EDE_CBC_SHA, TLS_ECDH_ECDSA_WITH_3DES_EDE_CBC_SHA, TLS_ECDH_RSA_WITH_3DES_EDE_CBC_SHA, SSL_DHE_RSA_WITH_3DES_EDE_CBC_SHA, SSL_DHE_DSS_WITH_3DES_EDE_CBC_SHA, TLS_EMPTY_RENEGOTIATION_INFO_SCSV]
+2017-10-26 22:39:25,484 DEBUG o.a.h.c.s.SSLConnectionSocketFactory [main] Starting handshake
+2017-10-26 22:39:25,781 DEBUG o.a.h.c.s.SSLConnectionSocketFactory [main] Secure session established
+2017-10-26 22:39:25,781 DEBUG o.a.h.c.s.SSLConnectionSocketFactory [main]  negotiated protocol: TLSv1.2
+2017-10-26 22:39:25,781 DEBUG o.a.h.c.s.SSLConnectionSocketFactory [main]  negotiated cipher suite: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256
+2017-10-26 22:39:25,781 DEBUG o.a.h.c.s.SSLConnectionSocketFactory [main]  peer principal: CN=api.telegram.org, OU=Domain Control Validated
+2017-10-26 22:39:25,781 DEBUG o.a.h.c.s.SSLConnectionSocketFactory [main]  peer alternative names: [api.telegram.org, www.api.telegram.org]
+2017-10-26 22:39:25,781 DEBUG o.a.h.c.s.SSLConnectionSocketFactory [main]  issuer principal: CN=Go Daddy Secure Certificate Authority - G2, OU=http://certs.godaddy.com/repository/, O="GoDaddy.com, Inc.", L=Scottsdale, ST=Arizona, C=US
+2017-10-26 22:39:25,781 DEBUG o.a.h.i.c.DefaultHttpClientConnectionOperator [main] Connection established 192.168.1.101:52899<->149.154.167.198:443
+2017-10-26 22:39:25,781 DEBUG o.a.h.i.e.MainClientExec [main] Executing request GET /bot433011224:AAEBSzz93CcGI6xjcQXjOtt5yrxooaZxej4/setwebhook HTTP/1.1
+2017-10-26 22:39:25,781 DEBUG o.a.h.i.e.MainClientExec [main] Target auth state: UNCHALLENGED
+2017-10-26 22:39:25,781 DEBUG o.a.h.i.e.MainClientExec [main] Proxy auth state: UNCHALLENGED
+2017-10-26 22:39:25,781 DEBUG o.a.h.headers [main] http-outgoing-0 >> GET /bot433011224:AAEBSzz93CcGI6xjcQXjOtt5yrxooaZxej4/setwebhook HTTP/1.1
+2017-10-26 22:39:25,781 DEBUG o.a.h.headers [main] http-outgoing-0 >> Host: api.telegram.org
+2017-10-26 22:39:25,781 DEBUG o.a.h.headers [main] http-outgoing-0 >> Connection: Keep-Alive
+2017-10-26 22:39:25,781 DEBUG o.a.h.headers [main] http-outgoing-0 >> User-Agent: Apache-HttpClient/4.5.3 (Java/1.8.0_131)
+2017-10-26 22:39:25,781 DEBUG o.a.h.headers [main] http-outgoing-0 >> Accept-Encoding: gzip,deflate
+2017-10-26 22:39:25,781 DEBUG o.a.h.wire [main] http-outgoing-0 >> "GET /bot433011224:AAEBSzz93CcGI6xjcQXjOtt5yrxooaZxej4/setwebhook HTTP/1.1[\r][\n]"
+2017-10-26 22:39:25,781 DEBUG o.a.h.wire [main] http-outgoing-0 >> "Host: api.telegram.org[\r][\n]"
+2017-10-26 22:39:25,781 DEBUG o.a.h.wire [main] http-outgoing-0 >> "Connection: Keep-Alive[\r][\n]"
+2017-10-26 22:39:25,781 DEBUG o.a.h.wire [main] http-outgoing-0 >> "User-Agent: Apache-HttpClient/4.5.3 (Java/1.8.0_131)[\r][\n]"
+2017-10-26 22:39:25,781 DEBUG o.a.h.wire [main] http-outgoing-0 >> "Accept-Encoding: gzip,deflate[\r][\n]"
+2017-10-26 22:39:25,781 DEBUG o.a.h.wire [main] http-outgoing-0 >> "[\r][\n]"
+2017-10-26 22:39:26,015 DEBUG o.a.h.wire [main] http-outgoing-0 << "HTTP/1.1 200 OK[\r][\n]"
+2017-10-26 22:39:26,015 DEBUG o.a.h.wire [main] http-outgoing-0 << "Server: nginx/1.10.1[\r][\n]"
+2017-10-26 22:39:26,015 DEBUG o.a.h.wire [main] http-outgoing-0 << "Date: Thu, 26 Oct 2017 14:40:24 GMT[\r][\n]"
+2017-10-26 22:39:26,015 DEBUG o.a.h.wire [main] http-outgoing-0 << "Content-Type: application/json[\r][\n]"
+2017-10-26 22:39:26,015 DEBUG o.a.h.wire [main] http-outgoing-0 << "Content-Length: 68[\r][\n]"
+2017-10-26 22:39:26,015 DEBUG o.a.h.wire [main] http-outgoing-0 << "Connection: keep-alive[\r][\n]"
+2017-10-26 22:39:26,015 DEBUG o.a.h.wire [main] http-outgoing-0 << "Access-Control-Allow-Origin: *[\r][\n]"
+2017-10-26 22:39:26,015 DEBUG o.a.h.wire [main] http-outgoing-0 << "Access-Control-Allow-Methods: GET, POST, OPTIONS[\r][\n]"
+2017-10-26 22:39:26,015 DEBUG o.a.h.wire [main] http-outgoing-0 << "Access-Control-Expose-Headers: Content-Length,Content-Type,Date,Server,Connection[\r][\n]"
+2017-10-26 22:39:26,015 DEBUG o.a.h.wire [main] http-outgoing-0 << "Strict-Transport-Security: max-age=31536000; includeSubdomains[\r][\n]"
+2017-10-26 22:39:26,015 DEBUG o.a.h.wire [main] http-outgoing-0 << "[\r][\n]"
+2017-10-26 22:39:26,015 DEBUG o.a.h.wire [main] http-outgoing-0 << "{"ok":true,"result":true,"description":"Webhook is already deleted"}"
+2017-10-26 22:39:26,015 DEBUG o.a.h.headers [main] http-outgoing-0 << HTTP/1.1 200 OK
+2017-10-26 22:39:26,030 DEBUG o.a.h.headers [main] http-outgoing-0 << Server: nginx/1.10.1
+2017-10-26 22:39:26,030 DEBUG o.a.h.headers [main] http-outgoing-0 << Date: Thu, 26 Oct 2017 14:40:24 GMT
+2017-10-26 22:39:26,030 DEBUG o.a.h.headers [main] http-outgoing-0 << Content-Type: application/json
+2017-10-26 22:39:26,030 DEBUG o.a.h.headers [main] http-outgoing-0 << Content-Length: 68
+2017-10-26 22:39:26,030 DEBUG o.a.h.headers [main] http-outgoing-0 << Connection: keep-alive
+2017-10-26 22:39:26,030 DEBUG o.a.h.headers [main] http-outgoing-0 << Access-Control-Allow-Origin: *
+2017-10-26 22:39:26,030 DEBUG o.a.h.headers [main] http-outgoing-0 << Access-Control-Allow-Methods: GET, POST, OPTIONS
+2017-10-26 22:39:26,030 DEBUG o.a.h.headers [main] http-outgoing-0 << Access-Control-Expose-Headers: Content-Length,Content-Type,Date,Server,Connection
+2017-10-26 22:39:26,030 DEBUG o.a.h.headers [main] http-outgoing-0 << Strict-Transport-Security: max-age=31536000; includeSubdomains
+2017-10-26 22:39:26,030 DEBUG o.a.h.i.e.MainClientExec [main] Connection can be kept alive indefinitely
+2017-10-26 22:39:26,030 DEBUG o.a.h.i.c.PoolingHttpClientConnectionManager [main] Connection [id: 0][route: {s}->https://api.telegram.org:443] can be kept alive indefinitely
+2017-10-26 22:39:26,030 DEBUG o.a.h.i.c.PoolingHttpClientConnectionManager [main] Connection released: [id: 0][route: {s}->https://api.telegram.org:443][total kept alive: 1; route allocated: 1 of 2; total allocated: 1 of 20]
+2017-10-26 22:39:26,030 DEBUG o.a.h.i.c.PoolingHttpClientConnectionManager [main] Connection manager is shutting down
+2017-10-26 22:39:26,030 DEBUG o.a.h.i.c.DefaultManagedHttpClientConnection [main] http-outgoing-0: Close connection
+2017-10-26 22:39:26,030 DEBUG o.a.h.i.c.PoolingHttpClientConnectionManager [main] Connection manager shut down
+2017-10-26 22:39:26,030 ERROR r.p.u.Main [main] bot!
+2017-10-26 22:39:26,077 DEBUG o.a.h.c.p.RequestAddCookies [uubeautybot Telegram Connection] CookieSpec selected: default
+2017-10-26 22:39:26,077 DEBUG o.a.h.c.p.RequestAuthCache [uubeautybot Telegram Connection] Auth cache not set in the context
+2017-10-26 22:39:26,077 DEBUG o.a.h.i.c.PoolingHttpClientConnectionManager [uubeautybot Telegram Connection] Connection request: [route: {s}->https://api.telegram.org:443][total kept alive: 0; route allocated: 0 of 2; total allocated: 0 of 100]
+2017-10-26 22:39:26,077 DEBUG o.a.h.i.c.PoolingHttpClientConnectionManager [uubeautybot Telegram Connection] Connection leased: [id: 1][route: {s}->https://api.telegram.org:443][total kept alive: 0; route allocated: 1 of 2; total allocated: 1 of 100]
+2017-10-26 22:39:26,077 DEBUG o.a.h.i.e.MainClientExec [uubeautybot Telegram Connection] Opening connection {s}->https://api.telegram.org:443
+2017-10-26 22:39:26,077 DEBUG o.a.h.i.c.DefaultHttpClientConnectionOperator [uubeautybot Telegram Connection] Connecting to api.telegram.org/149.154.167.198:443
+2017-10-26 22:39:26,077 DEBUG o.a.h.c.s.SSLConnectionSocketFactory [uubeautybot Telegram Connection] Connecting socket to api.telegram.org/149.154.167.198:443 with timeout 75000
+2017-10-26 22:39:26,186 DEBUG o.a.h.c.s.SSLConnectionSocketFactory [uubeautybot Telegram Connection] Enabled protocols: [TLSv1, TLSv1.1, TLSv1.2]
+2017-10-26 22:39:26,186 DEBUG o.a.h.c.s.SSLConnectionSocketFactory [uubeautybot Telegram Connection] Enabled cipher suites:[TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, TLS_RSA_WITH_AES_128_CBC_SHA256, TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA256, TLS_ECDH_RSA_WITH_AES_128_CBC_SHA256, TLS_DHE_RSA_WITH_AES_128_CBC_SHA256, TLS_DHE_DSS_WITH_AES_128_CBC_SHA256, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, TLS_RSA_WITH_AES_128_CBC_SHA, TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA, TLS_ECDH_RSA_WITH_AES_128_CBC_SHA, TLS_DHE_RSA_WITH_AES_128_CBC_SHA, TLS_DHE_DSS_WITH_AES_128_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, TLS_RSA_WITH_AES_128_GCM_SHA256, TLS_ECDH_ECDSA_WITH_AES_128_GCM_SHA256, TLS_ECDH_RSA_WITH_AES_128_GCM_SHA256, TLS_DHE_RSA_WITH_AES_128_GCM_SHA256, TLS_DHE_DSS_WITH_AES_128_GCM_SHA256, TLS_ECDHE_ECDSA_WITH_3DES_EDE_CBC_SHA, TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA, SSL_RSA_WITH_3DES_EDE_CBC_SHA, TLS_ECDH_ECDSA_WITH_3DES_EDE_CBC_SHA, TLS_ECDH_RSA_WITH_3DES_EDE_CBC_SHA, SSL_DHE_RSA_WITH_3DES_EDE_CBC_SHA, SSL_DHE_DSS_WITH_3DES_EDE_CBC_SHA, TLS_EMPTY_RENEGOTIATION_INFO_SCSV]
+2017-10-26 22:39:26,186 DEBUG o.a.h.c.s.SSLConnectionSocketFactory [uubeautybot Telegram Connection] Starting handshake
+2017-10-26 22:39:26,436 DEBUG o.a.h.c.s.SSLConnectionSocketFactory [uubeautybot Telegram Connection] Secure session established
+2017-10-26 22:39:26,436 DEBUG o.a.h.c.s.SSLConnectionSocketFactory [uubeautybot Telegram Connection]  negotiated protocol: TLSv1.2
+2017-10-26 22:39:26,436 DEBUG o.a.h.c.s.SSLConnectionSocketFactory [uubeautybot Telegram Connection]  negotiated cipher suite: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256
+2017-10-26 22:39:26,436 DEBUG o.a.h.c.s.SSLConnectionSocketFactory [uubeautybot Telegram Connection]  peer principal: CN=api.telegram.org, OU=Domain Control Validated
+2017-10-26 22:39:26,436 DEBUG o.a.h.c.s.SSLConnectionSocketFactory [uubeautybot Telegram Connection]  peer alternative names: [api.telegram.org, www.api.telegram.org]
+2017-10-26 22:39:26,436 DEBUG o.a.h.c.s.SSLConnectionSocketFactory [uubeautybot Telegram Connection]  issuer principal: CN=Go Daddy Secure Certificate Authority - G2, OU=http://certs.godaddy.com/repository/, O="GoDaddy.com, Inc.", L=Scottsdale, ST=Arizona, C=US
+2017-10-26 22:39:26,436 DEBUG o.a.h.i.c.DefaultHttpClientConnectionOperator [uubeautybot Telegram Connection] Connection established 192.168.1.101:52900<->149.154.167.198:443
+2017-10-26 22:39:26,436 DEBUG o.a.h.i.c.DefaultManagedHttpClientConnection [uubeautybot Telegram Connection] http-outgoing-1: set socket timeout to 75000
+2017-10-26 22:39:26,436 DEBUG o.a.h.i.e.MainClientExec [uubeautybot Telegram Connection] Executing request POST /bot433011224:AAEBSzz93CcGI6xjcQXjOtt5yrxooaZxej4/getupdates HTTP/1.1
+2017-10-26 22:39:26,436 DEBUG o.a.h.i.e.MainClientExec [uubeautybot Telegram Connection] Target auth state: UNCHALLENGED
+2017-10-26 22:39:26,436 DEBUG o.a.h.i.e.MainClientExec [uubeautybot Telegram Connection] Proxy auth state: UNCHALLENGED
+2017-10-26 22:39:26,436 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 >> POST /bot433011224:AAEBSzz93CcGI6xjcQXjOtt5yrxooaZxej4/getupdates HTTP/1.1
+2017-10-26 22:39:26,436 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 >> charset: UTF-8
+2017-10-26 22:39:26,436 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 >> Content-Length: 59
+2017-10-26 22:39:26,436 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 >> Content-Type: application/json; charset=UTF-8
+2017-10-26 22:39:26,436 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 >> Host: api.telegram.org
+2017-10-26 22:39:26,436 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 >> Connection: Keep-Alive
+2017-10-26 22:39:26,436 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 >> User-Agent: Apache-HttpClient/4.5.3 (Java/1.8.0_131)
+2017-10-26 22:39:26,436 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 >> Accept-Encoding: gzip,deflate
+2017-10-26 22:39:26,436 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 >> "POST /bot433011224:AAEBSzz93CcGI6xjcQXjOtt5yrxooaZxej4/getupdates HTTP/1.1[\r][\n]"
+2017-10-26 22:39:26,436 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 >> "charset: UTF-8[\r][\n]"
+2017-10-26 22:39:26,436 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 >> "Content-Length: 59[\r][\n]"
+2017-10-26 22:39:26,436 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 >> "Content-Type: application/json; charset=UTF-8[\r][\n]"
+2017-10-26 22:39:26,436 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 >> "Host: api.telegram.org[\r][\n]"
+2017-10-26 22:39:26,436 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 >> "Connection: Keep-Alive[\r][\n]"
+2017-10-26 22:39:26,436 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 >> "User-Agent: Apache-HttpClient/4.5.3 (Java/1.8.0_131)[\r][\n]"
+2017-10-26 22:39:26,436 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 >> "Accept-Encoding: gzip,deflate[\r][\n]"
+2017-10-26 22:39:26,436 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 >> "[\r][\n]"
+2017-10-26 22:39:26,436 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 >> "{"offset":1,"limit":100,"timeout":50,"method":"getupdates"}"
+2017-10-26 22:39:31,305 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 << "HTTP/1.1 200 OK[\r][\n]"
+2017-10-26 22:39:31,305 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 << "Server: nginx/1.10.1[\r][\n]"
+2017-10-26 22:39:31,305 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 << "Date: Thu, 26 Oct 2017 14:40:29 GMT[\r][\n]"
+2017-10-26 22:39:31,305 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 << "Content-Type: application/json[\r][\n]"
+2017-10-26 22:39:31,305 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 << "Content-Length: 693[\r][\n]"
+2017-10-26 22:39:31,305 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 << "Connection: keep-alive[\r][\n]"
+2017-10-26 22:39:31,305 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 << "Access-Control-Allow-Origin: *[\r][\n]"
+2017-10-26 22:39:31,305 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 << "Access-Control-Allow-Methods: GET, POST, OPTIONS[\r][\n]"
+2017-10-26 22:39:31,305 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 << "Access-Control-Expose-Headers: Content-Length,Content-Type,Date,Server,Connection[\r][\n]"
+2017-10-26 22:39:31,305 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 << "Strict-Transport-Security: max-age=31536000; includeSubdomains[\r][\n]"
+2017-10-26 22:39:31,305 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 << "[\r][\n]"
+2017-10-26 22:39:31,305 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 << "{"ok":true,"result":[{"update_id":9572215,[\n]"
+2017-10-26 22:39:31,305 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 << ""callback_query":{"id":"350325117269812934","from":{"id":81566422,"is_bot":false,"first_name":"Alexandr","last_name":"Timofeev","language_code":"ru-RU"},"message":{"message_id":10,"from":{"id":433011224,"is_bot":true,"first_name":"uubeauty","username":"uubeautybot"},"chat":{"id":81566422,"first_name":"Alexandr","last_name":"Timofeev","type":"private"},"date":1509026608,"text":"\u0414\u043e\u0441\u0442\u0443\u043f\u043d\u044b\u0435 \u0443\u0441\u043b\u0443\u0433\u0438:","entities":[{"offset":0,"length":17,"type":"bold"}]},"chat_instance":"-1399269840831335984","data":"{\"name\":\"OPEN_SHEDULE\",\"id\":\"\",\"value\":\"\",\"command\":\"\"}"}}]}"
+2017-10-26 22:39:31,305 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 << HTTP/1.1 200 OK
+2017-10-26 22:39:31,305 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 << Server: nginx/1.10.1
+2017-10-26 22:39:31,305 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 << Date: Thu, 26 Oct 2017 14:40:29 GMT
+2017-10-26 22:39:31,305 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 << Content-Type: application/json
+2017-10-26 22:39:31,305 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 << Content-Length: 693
+2017-10-26 22:39:31,305 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 << Connection: keep-alive
+2017-10-26 22:39:31,305 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 << Access-Control-Allow-Origin: *
+2017-10-26 22:39:31,305 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 << Access-Control-Allow-Methods: GET, POST, OPTIONS
+2017-10-26 22:39:31,305 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 << Access-Control-Expose-Headers: Content-Length,Content-Type,Date,Server,Connection
+2017-10-26 22:39:31,305 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 << Strict-Transport-Security: max-age=31536000; includeSubdomains
+2017-10-26 22:39:31,305 DEBUG o.a.h.i.e.MainClientExec [uubeautybot Telegram Connection] Connection can be kept alive indefinitely
+2017-10-26 22:39:31,305 DEBUG o.a.h.i.c.PoolingHttpClientConnectionManager [uubeautybot Telegram Connection] Connection [id: 1][route: {s}->https://api.telegram.org:443] can be kept alive indefinitely
+2017-10-26 22:39:31,305 DEBUG o.a.h.i.c.PoolingHttpClientConnectionManager [uubeautybot Telegram Connection] Connection released: [id: 1][route: {s}->https://api.telegram.org:443][total kept alive: 1; route allocated: 1 of 2; total allocated: 1 of 100]
+2017-10-26 22:39:31,352 DEBUG o.a.h.c.p.RequestAddCookies [uubeautybot Telegram Connection] CookieSpec selected: default
+2017-10-26 22:39:31,352 DEBUG o.a.h.c.p.RequestAuthCache [uubeautybot Telegram Connection] Auth cache not set in the context
+2017-10-26 22:39:31,352 DEBUG o.a.h.i.c.PoolingHttpClientConnectionManager [uubeautybot Telegram Connection] Connection request: [route: {s}->https://api.telegram.org:443][total kept alive: 1; route allocated: 1 of 2; total allocated: 1 of 100]
+2017-10-26 22:39:31,352 DEBUG o.a.h.i.c.PoolingHttpClientConnectionManager [uubeautybot Telegram Connection] Connection leased: [id: 1][route: {s}->https://api.telegram.org:443][total kept alive: 0; route allocated: 1 of 2; total allocated: 1 of 100]
+2017-10-26 22:39:31,352 DEBUG o.a.h.i.c.DefaultManagedHttpClientConnection [uubeautybot Telegram Connection] http-outgoing-1: set socket timeout to 75000
+2017-10-26 22:39:31,352 DEBUG o.a.h.i.e.MainClientExec [uubeautybot Telegram Connection] Executing request POST /bot433011224:AAEBSzz93CcGI6xjcQXjOtt5yrxooaZxej4/getupdates HTTP/1.1
+2017-10-26 22:39:31,352 DEBUG o.a.h.i.e.MainClientExec [uubeautybot Telegram Connection] Target auth state: UNCHALLENGED
+2017-10-26 22:39:31,352 DEBUG o.a.h.i.e.MainClientExec [uubeautybot Telegram Connection] Proxy auth state: UNCHALLENGED
+2017-10-26 22:39:31,352 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 >> POST /bot433011224:AAEBSzz93CcGI6xjcQXjOtt5yrxooaZxej4/getupdates HTTP/1.1
+2017-10-26 22:39:31,352 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 >> charset: UTF-8
+2017-10-26 22:39:31,352 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 >> Content-Length: 65
+2017-10-26 22:39:31,352 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 >> Content-Type: application/json; charset=UTF-8
+2017-10-26 22:39:31,352 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 >> Host: api.telegram.org
+2017-10-26 22:39:31,352 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 >> Connection: Keep-Alive
+2017-10-26 22:39:31,352 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 >> User-Agent: Apache-HttpClient/4.5.3 (Java/1.8.0_131)
+2017-10-26 22:39:31,352 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 >> Accept-Encoding: gzip,deflate
+2017-10-26 22:39:31,352 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 >> "POST /bot433011224:AAEBSzz93CcGI6xjcQXjOtt5yrxooaZxej4/getupdates HTTP/1.1[\r][\n]"
+2017-10-26 22:39:31,352 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 >> "charset: UTF-8[\r][\n]"
+2017-10-26 22:39:31,352 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 >> "Content-Length: 65[\r][\n]"
+2017-10-26 22:39:31,352 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 >> "Content-Type: application/json; charset=UTF-8[\r][\n]"
+2017-10-26 22:39:31,352 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 >> "Host: api.telegram.org[\r][\n]"
+2017-10-26 22:39:31,352 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 >> "Connection: Keep-Alive[\r][\n]"
+2017-10-26 22:39:31,352 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 >> "User-Agent: Apache-HttpClient/4.5.3 (Java/1.8.0_131)[\r][\n]"
+2017-10-26 22:39:31,352 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 >> "Accept-Encoding: gzip,deflate[\r][\n]"
+2017-10-26 22:39:31,352 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 >> "[\r][\n]"
+2017-10-26 22:39:31,352 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 >> "{"offset":9572216,"limit":100,"timeout":50,"method":"getupdates"}"
+2017-10-26 22:40:21,477 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 << "HTTP/1.1 200 OK[\r][\n]"
+2017-10-26 22:40:21,477 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 << "Server: nginx/1.10.1[\r][\n]"
+2017-10-26 22:40:21,477 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 << "Date: Thu, 26 Oct 2017 14:41:19 GMT[\r][\n]"
+2017-10-26 22:40:21,477 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 << "Content-Type: application/json[\r][\n]"
+2017-10-26 22:40:21,477 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 << "Content-Length: 23[\r][\n]"
+2017-10-26 22:40:21,477 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 << "Connection: keep-alive[\r][\n]"
+2017-10-26 22:40:21,477 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 << "Access-Control-Allow-Origin: *[\r][\n]"
+2017-10-26 22:40:21,477 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 << "Access-Control-Allow-Methods: GET, POST, OPTIONS[\r][\n]"
+2017-10-26 22:40:21,477 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 << "Access-Control-Expose-Headers: Content-Length,Content-Type,Date,Server,Connection[\r][\n]"
+2017-10-26 22:40:21,477 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 << "Strict-Transport-Security: max-age=31536000; includeSubdomains[\r][\n]"
+2017-10-26 22:40:21,477 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 << "[\r][\n]"
+2017-10-26 22:40:21,477 DEBUG o.a.h.wire [uubeautybot Telegram Connection] http-outgoing-1 << "{"ok":true,"result":[]}"
+2017-10-26 22:40:21,477 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 << HTTP/1.1 200 OK
+2017-10-26 22:40:21,477 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 << Server: nginx/1.10.1
+2017-10-26 22:40:21,477 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 << Date: Thu, 26 Oct 2017 14:41:19 GMT
+2017-10-26 22:40:21,477 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 << Content-Type: application/json
+2017-10-26 22:40:21,477 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 << Content-Length: 23
+2017-10-26 22:40:21,477 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 << Connection: keep-alive
+2017-10-26 22:40:21,477 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 << Access-Control-Allow-Origin: *
+2017-10-26 22:40:21,477 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 << Access-Control-Allow-Methods: GET, POST, OPTIONS
+2017-10-26 22:40:21,477 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 << Access-Control-Expose-Headers: Content-Length,Content-Type,Date,Server,Connection
+2017-10-26 22:40:21,477 DEBUG o.a.h.headers [uubeautybot Telegram Connection] http-outgoing-1 << Strict-Transport-Security: max-age=31536000; includeSubdomains
+2017-10-26 22:40:21,477 DEBUG o.a.h.i.e.MainClientExec [uubeautybot Telegram Connection] Connection can be kept alive indefinitely
+2017-10-26 22:40:21,477 DEBUG o.a.h.i.c.PoolingHttpClientConnectionManager [uubeautybot Telegram Connection] Connection [id: 1][route: {s}->https://api.telegram.org:443] can be kept alive indefinitely
+2017-10-26 22:40:21,477 DEBUG o.a.h.i.c.PoolingHttpClientConnectionManager [uubeautybot Telegram Connection] Connection released: [id: 1][route: {s}->https://api.telegram.org:443][total kept alive: 1; route allocated: 1 of 2; total allocated: 1 of 100]
