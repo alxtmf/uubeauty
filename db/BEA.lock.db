@@ -1,0 +1,6 @@
+#FileLock
+#Sat Oct 28 19:00:31 IRKT 2017
+hostName=mainserv
+id=15f62a3ed888353779fd719a60d2e0ec396e2677538
+method=file
+server=192.168.1.101\:57514

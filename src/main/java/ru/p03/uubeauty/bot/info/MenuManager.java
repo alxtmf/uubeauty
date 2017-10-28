@@ -28,6 +28,10 @@ public class MenuManager {
     public static final String OPEN_MESSAGE_INFO = "OPEN_MESSAGE_INFO";
     public static final String OPEN_MAIN = "OPEN_MAIN";
     public static final String OPEN_FIND_SNILS = "OPEN_FS";
+    
+    public static final String OPEN_EMPLOYEE_LIST = "OPEN_EMPLOYEE_LIST";
+    public static final String OPEN_SERVICE_LIST = "OPEN_SERVICE_LIST";
+    
     private final DocumentMarshalerAggregator marshalFactory;
     
     public MenuManager(DocumentMarshalerAggregator marshalFactory) {
@@ -73,16 +77,26 @@ public class MenuManager {
     public InlineKeyboardMarkup keyboard(){
         final InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
-        keyboard.add(Arrays.asList(scheduleInfoButton()));
-        keyboard.add(Arrays.asList(messageInfoButton()));
-        keyboard.add(Arrays.asList(findSnilsInfoButton()));
+        keyboard.add(Arrays.asList(employeeListButton()));
+        keyboard.add(Arrays.asList(sheduleListButton()));
+        keyboard.add(Arrays.asList(serviceListButton()));
         markup.setKeyboard(keyboard);
         return markup;
     }
     
-    private InlineKeyboardButton scheduleInfoButton() {
+    private InlineKeyboardButton employeeListButton() {
         InlineKeyboardButton button = new InlineKeyboardButton();
         button.setText("Выбрать мастера");
+        Action action = new Action();
+        action.setName(OPEN_EMPLOYEE_LIST);
+        String clbData = marshalFactory.<Action>marshal(action, ClsDocType.ACTION);
+        button.setCallbackData(clbData);
+        return button;
+    }
+    
+    private InlineKeyboardButton sheduleListButton() {
+        InlineKeyboardButton button = new InlineKeyboardButton();
+        button.setText("Выбрать время записи");
         Action action = new Action();
         action.setName(OPEN_SHEDULE);
         String clbData = marshalFactory.<Action>marshal(action, ClsDocType.ACTION);
@@ -90,21 +104,11 @@ public class MenuManager {
         return button;
     }
     
-    private InlineKeyboardButton messageInfoButton() {
-        InlineKeyboardButton button = new InlineKeyboardButton();
-        button.setText("Выбрать время записи");
-        Action action = new Action();
-        action.setName(OPEN_MESSAGE_INFO);
-        String clbData = marshalFactory.<Action>marshal(action, ClsDocType.ACTION);
-        button.setCallbackData(clbData);
-        return button;
-    }
-    
-    private InlineKeyboardButton findSnilsInfoButton() {
+    private InlineKeyboardButton serviceListButton() {
         InlineKeyboardButton button = new InlineKeyboardButton();
         button.setText("Выбрать услугу");
         Action action = new Action();
-        action.setName(OPEN_FIND_SNILS);
+        action.setName(OPEN_SERVICE_LIST);
         String clbData = marshalFactory.<Action>marshal(action, ClsDocType.ACTION);
         button.setCallbackData(clbData);
         return button;

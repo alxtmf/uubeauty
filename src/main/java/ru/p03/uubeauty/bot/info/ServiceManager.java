@@ -23,6 +23,8 @@ import ru.p03.uubeauty.bot.schema.InfoMessage;
 import ru.p03.uubeauty.bot.schema.InfoMessageList;
 import ru.p03.uubeauty.bot.schema.Param;
 import ru.p03.uubeauty.AppEnv;
+import ru.p03.uubeauty.model.ClsService;
+import ru.p03.uubeauty.model.repository.ClassifierRepository;
 
 /**
  *
@@ -33,36 +35,36 @@ public class ServiceManager {
     public static final String VIEW_MESSAGE_INFO = "VIEW_MSG";
     public static final String MESSAGE_CODE = "MESSAGE_CODE";
 
-    private final InfoMessageList data;
+    private final ClassifierRepository classifierRepository;
     private final DocumentMarshalerAggregator marshalFactory;
 
-    public ServiceManager(InfoMessageList data, DocumentMarshalerAggregator marshalFactory) {
-        this.data = data;
+    public ServiceManager(ClassifierRepository classifierRepository, DocumentMarshalerAggregator marshalFactory) {
+        this.classifierRepository = classifierRepository;
         this.marshalFactory = marshalFactory;
     }
 
 
-    public List<InlineKeyboardButton> buttons() {
+    public List<InlineKeyboardButton> buttons(Update update) {
         final List<InlineKeyboardButton> buttons = new ArrayList<>();
 
-        List<InfoMessage> inf = data.getInfoMessage();
-        inf.sort((new Comparator<InfoMessage>() {
-            @Override
-            public int compare(InfoMessage o1, InfoMessage o2) {
-                return o1.getCode().compareTo(o2.getCode());
-            }
-        }));
+        List<ClsService> inf = classifierRepository.getAll(ClsService.class);
+//        inf.sort((new Comparator<InfoMessage>() {
+//            @Override
+//            public int compare(InfoMessage o1, InfoMessage o2) {
+//                return o1.getCode().compareTo(o2.getCode());
+//            }
+//        }));
 
         inf.stream().forEach((t) -> {
-            buttons.add(fromMesssageInfo(t));
+            buttons.add(fromClsService(t, update));
         });
         return buttons;
     }
 
-    public InlineKeyboardMarkup keyboard() {
+    public InlineKeyboardMarkup keyboard(Update update) {
         final InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
-        buttons().stream().forEach((t) -> {
+        buttons(update).stream().forEach((t) -> {
             keyboard.add(Arrays.asList(t));
         });
         keyboard.add(Arrays.asList(AppEnv.getContext().getMenuManager().buttonMain()));
@@ -70,15 +72,15 @@ public class ServiceManager {
         return markup;
     }
 
-    private InlineKeyboardButton fromMesssageInfo(InfoMessage t) {
-        InlineKeyboardButton button = new InlineKeyboardButton();
+    private InlineKeyboardButton fromClsService(ClsService t, Update update) {
+         InlineKeyboardButton button = new InlineKeyboardButton();
         button.setText(t.getName());
         Action action = new Action();
         action.setName(VIEW_MESSAGE_INFO);
 //        Param param = new Param();
 //        param.setName(MESSAGE_CODE);
-        action.setValue(t.getCode());
-        action.setId(t.getCode());
+        action.setValue(t.getId().toString());
+        action.setId(update.getCallbackQuery().getFrom().getId().toString());
         //action.getParamList().getParam().add(param);
         String clbData = marshalFactory.<Action>marshal(action, ClsDocType.ACTION);
         button.setCallbackData(clbData);
@@ -99,18 +101,18 @@ public class ServiceManager {
                 return null;
             }
 
-            if (MenuManager.OPEN_MESSAGE_INFO.equals(action.getName())) {
+            if (MenuManager.OPEN_SERVICE_LIST.equals(action.getName())) {
                 answerMessage = new SendMessage();
-                answerMessage.setText("<b>Нажмите на кнопку для получения информации</b>");
-                InlineKeyboardMarkup markup = keyboard();             
+                answerMessage.setText("<b>Выберите услугу:</b>");
+                InlineKeyboardMarkup markup = keyboard(update);             
                 answerMessage.setReplyMarkup(markup);
             }
 
-            if (VIEW_MESSAGE_INFO.equals(action.getName())) {
-                answerMessage = infoMessage(action);
-                InlineKeyboardMarkup markup = AppEnv.getContext().getMenuManager().keyboardMain();
-                answerMessage.setReplyMarkup(markup);
-            }
+//            if (VIEW_MESSAGE_INFO.equals(action.getName())) {
+//                answerMessage = infoMessage(action);
+//                InlineKeyboardMarkup markup = AppEnv.getContext().getMenuManager().keyboardMain();
+//                answerMessage.setReplyMarkup(markup);
+//            }
 
         } catch (Exception ex) {
             Logger.getLogger(ServiceManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -118,21 +120,21 @@ public class ServiceManager {
         return answerMessage;
     }
 
-    private SendMessage infoMessage(Action action) {
-        SendMessage answerMessage = null;
-        String value = action.getValue(); //getParamList().getParam();
-
-        List<InfoMessage> im = data.getInfoMessage().stream().filter((t) -> {
-            return t.getCode().equals(value);
-        }).collect(Collectors.toList());
-
-        String text = "";
-        for (InfoMessage infoMessage : im) {
-            text += infoMessage.getMessage();
-        }
-        answerMessage = new SendMessage();
-        answerMessage.setText(text);
-
-        return answerMessage;
-    }
+//    private SendMessage infoMessage(Action action) {
+//        SendMessage answerMessage = null;
+//        String value = action.getValue(); //getParamList().getParam();
+//
+//        List<InfoMessage> im = data.getInfoMessage().stream().filter((t) -> {
+//            return t.getCode().equals(value);
+//        }).collect(Collectors.toList());
+//
+//        String text = "";
+//        for (InfoMessage infoMessage : im) {
+//            text += infoMessage.getMessage();
+//        }
+//        answerMessage = new SendMessage();
+//        answerMessage.setText(text);
+//
+//        return answerMessage;
+//    }
 }

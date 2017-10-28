@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +28,7 @@ import ru.p03.uubeautyi.bot.document.spi.DocumentMarshalerAggregator;
 import ru.p03.uubeautyi.bot.document.spi.DocumentMarshaller;
 import ru.p03.uubeauty.bot.info.MenuManager;
 import ru.p03.uubeauty.bot.info.EmployeeManager;
+import ru.p03.uubeauty.bot.info.ScheduleInfoManager;
 import ru.p03.uubeauty.bot.info.ServiceManager;
 
 import ru.p03.uubeauty.bot.schema.Action;
@@ -76,23 +78,23 @@ public class AppEnv {
     }
     
     private void initManagers(){
-        String filePathService = (String)environments.get(SERVICE_FILE);
+        //String filePathService = (String)environments.get(SERVICE_FILE);
         //String filePathEmployee = (String)environments.get(EMPLOYEE_FILE);
-        String xml;
-        try {
-            xml = ResourceUtils.readFile(filePathService);
-            InfoMessageList data = marshalFactory.<InfoMessageList>unmarshal(xml, ClsDocType.SERVICE_INFO);
-            serviceManager = new ServiceManager(data, marshalFactory);
+        //String xml;
+        //try {
+            //xml = ResourceUtils.readFile(filePathService);
+            //InfoMessageList data = marshalFactory.<InfoMessageList>unmarshal(xml, ClsDocType.SERVICE_INFO);
+            serviceManager = new ServiceManager(classifierRepository, marshalFactory);
             
             menuManager = new MenuManager(marshalFactory);
             
             //xml = ResourceUtils.readFile(filePathEmployee);
             //InfoMessageList dataInfoMessage = marshalFactory.<InfoMessageList>unmarshal(xml, ClsDocType.EMPLOYEE_LIST);
-            employeeManager = new EmployeeManager(classifierRepository, marshalFactory);
+            employeeManager = new EmployeeManager(classifierRepository, marshalFactory);          
             
-        } catch (IOException ex) {
-            Logger.getLogger(AppEnv.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        //} catch (IOException ex) {
+        //    Logger.getLogger(AppEnv.class.getName()).log(Level.SEVERE, null, ex);
+        //}
         
     }
     

@@ -23,6 +23,7 @@ import ru.p03.uubeauty.bot.schema.InfoMessage;
 import ru.p03.uubeauty.bot.schema.InfoMessageList;
 import ru.p03.uubeauty.bot.schema.Param;
 import ru.p03.uubeauty.AppEnv;
+import static ru.p03.uubeauty.bot.info.MenuManager.OPEN_EMPLOYEE_LIST;
 import ru.p03.uubeauty.model.ClsEmployee;
 import ru.p03.uubeauty.model.repository.ClassifierRepository;
 
@@ -102,7 +103,7 @@ public class EmployeeManager {
                 return null;
             }
 
-            if (MenuManager.OPEN_MESSAGE_INFO.equals(action.getName())) {
+            if (MenuManager.OPEN_EMPLOYEE_LIST.equals(action.getName())) {
                 answerMessage = new SendMessage();
                 answerMessage.setText("<b>Выберите мастера</b>");
                 InlineKeyboardMarkup markup = keyboard(update);             

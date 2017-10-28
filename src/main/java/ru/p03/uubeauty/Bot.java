@@ -5,6 +5,7 @@
  */
 package ru.p03.uubeauty;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -95,14 +96,15 @@ public class Bot extends TelegramLongPollingBot {
                 return;
             }
             
-//            answerMessage = AppEnv.getContext().getFindSnilsManager().processCallbackQuery(update);
-//            
-//            if (answerMessage != null){               
-//                answerMessage.setParseMode("HTML");
-//                answerMessage.setChatId(chatId);
-//                sendMessage(answerMessage);
-//                return;
-//            }
+            ScheduleInfoManager sim = new ScheduleInfoManager(LocalDateTime.now(),  AppEnv.getContext().getMarschaller());
+            answerMessage = sim.processCallbackQuery(update);
+            
+            if (answerMessage != null){               
+                answerMessage.setParseMode("HTML");
+                answerMessage.setChatId(chatId);
+                sendMessage(answerMessage);
+                return;
+            }
 
         } catch (TelegramApiException ex) {
             Logger.getLogger(Bot.class.getName()).log(Level.SEVERE, null, ex);
@@ -114,7 +116,7 @@ public class Bot extends TelegramLongPollingBot {
         try {
             answerMessage = AppEnv.getContext().getMenuManager().processCommand(update);
             if (answerMessage != null) {
-                answerMessage.setText("<b>Доступные услуги:</b>");
+                answerMessage.setText("<b>Нажмите на кнопку, чтобы начать запись</b>");
                 answerMessage.setParseMode("HTML");
                 answerMessage.setChatId(update.getMessage().getChatId());
                 sendMessage(answerMessage);
