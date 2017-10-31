@@ -80,7 +80,7 @@ public class ServiceManager {
 //        Param param = new Param();
 //        param.setName(MESSAGE_CODE);
         action.setValue(t.getId().toString());
-        action.setId(update.getCallbackQuery().getFrom().getId().toString());
+        //action.setId(update.getCallbackQuery().getFrom().getId().toString());
         //action.getParamList().getParam().add(param);
         String clbData = marshalFactory.<Action>marshal(action, ClsDocType.ACTION);
         button.setCallbackData(clbData);

@@ -7,11 +7,9 @@ package ru.p03.uubeauty.bot.info;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -19,11 +17,7 @@ import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboar
 import ru.p03.uubeautyi.bot.document.spi.DocumentMarshalerAggregator;
 import ru.p03.uubeauty.model.ClsDocType;
 import ru.p03.uubeauty.bot.schema.Action;
-import ru.p03.uubeauty.bot.schema.InfoMessage;
-import ru.p03.uubeauty.bot.schema.InfoMessageList;
-import ru.p03.uubeauty.bot.schema.Param;
 import ru.p03.uubeauty.AppEnv;
-import static ru.p03.uubeauty.bot.info.MenuManager.OPEN_EMPLOYEE_LIST;
 import ru.p03.uubeauty.model.ClsEmployee;
 import ru.p03.uubeauty.model.repository.ClassifierRepository;
 
@@ -82,7 +76,7 @@ public class EmployeeManager {
 //        Param param = new Param();
 //        param.setName(MESSAGE_CODE);
         action.setValue(t.getId().toString());
-        action.setId(update.getCallbackQuery().getFrom().getId().toString());
+        //action.setId(update.getCallbackQuery().getFrom().getId().toString());
         //action.getParamList().getParam().add(param);
         String clbData = marshalFactory.<Action>marshal(action, ClsDocType.ACTION);
         button.setCallbackData(clbData);

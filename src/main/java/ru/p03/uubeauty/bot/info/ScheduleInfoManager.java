@@ -38,6 +38,7 @@ import ru.p03.uubeauty.AppEnv;
 public class ScheduleInfoManager {
     
     private long maxHour = 20L;
+    private long minHour = 8L;
     private long maxNextDays = 7L;
     private LocalDateTime now;
     private Locale ru = new Locale.Builder()
@@ -54,6 +55,7 @@ public class ScheduleInfoManager {
         return dates;
     }
     public static final String SELECT_DATE_ACTION = "SELDTA";
+    public static final String SELECT_HOUR_ACTION = "SELHR";
 //    public static final String FILIAL_CODE = "FILIAL_CODE";
 //
 //    private final DataList data;
@@ -83,14 +85,27 @@ public class ScheduleInfoManager {
             text = "Сегодня";
         }else{            
             text = ldt.getDayOfWeek().getDisplayName(TextStyle.FULL, ru)
-                    + " - " + ldt.getDayOfMonth() + "." 
+                    + " - " + ldt.getDayOfMonth() + " " 
                     + ldt.getMonth().getDisplayName(TextStyle.FULL, ru);
         }
         button.setText(text);
         Action action = new Action();
         action.setName(SELECT_DATE_ACTION);
         action.setValue(ldt.toLocalDate().toString());
-        action.setId(from.getId().toString());
+        //action.setId(from.getId().toString());
+        String clbData = marshalFactory.<Action>marshal(action, ClsDocType.ACTION);
+        button.setCallbackData(clbData);
+        return button;
+    } 
+    
+    private InlineKeyboardButton dayHoursToButton(User from, Long ldt) {
+        InlineKeyboardButton button = new InlineKeyboardButton();
+        String text = ldt + ":00";
+        button.setText(text);
+        Action action = new Action();
+        action.setName(SELECT_HOUR_ACTION);
+        action.setValue(ldt.toString());
+        //action.setId(from.getId().toString());
         String clbData = marshalFactory.<Action>marshal(action, ClsDocType.ACTION);
         button.setCallbackData(clbData);
         return button;
@@ -104,12 +119,48 @@ public class ScheduleInfoManager {
         });
         return buttons;
     }
+    
+    private List<Long> getNextHours(){
+        final List<Long> h = new ArrayList<>();
+        LocalDateTime _now = LocalDateTime.of(now.toLocalDate(), now.toLocalTime());
+        LongStream.rangeClosed(minHour, maxHour).forEach((i) -> {
+            h.add(i);
+        });
+        return h;
+    }
+    
+    public List<InlineKeyboardButton> buttonsInDay(User from, Action action) {
+        final List<InlineKeyboardButton> buttons = new ArrayList<>();
+        
+        getNextHours().stream().forEach((ldt) ->{
+            buttons.add(dayHoursToButton(from, ldt));
+        });
+        return buttons;
+    }
 //
     public InlineKeyboardMarkup keyboard(User from) {
         final InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
         buttons(from).stream().forEach((t) -> {
             keyboard.add(Arrays.asList(t));
+        });
+        keyboard.add(Arrays.asList(AppEnv.getContext().getMenuManager().buttonMain()));
+        markup.setKeyboard(keyboard);
+        return markup;
+              
+    }
+    
+    public InlineKeyboardMarkup keyboardInDay(User from, Action action) {
+        final InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
+        final List<InlineKeyboardButton> strBtn = new ArrayList<>();
+        final int max = 3;
+        buttonsInDay(from, action).stream().forEach((t) -> {
+            strBtn.add(t);
+            if (strBtn.size() == max){
+                keyboard.add(new ArrayList<>(strBtn));
+                strBtn.clear();
+            }
         });
         keyboard.add(Arrays.asList(AppEnv.getContext().getMenuManager().buttonMain()));
         markup.setKeyboard(keyboard);
@@ -139,11 +190,12 @@ public class ScheduleInfoManager {
                 answerMessage.setReplyMarkup(markup);
             }
 
-//            if (SELECT_DATE_ACTION.equals(action.getName())) {
-//                answerMessage = sheduleMessage(action);
-//                InlineKeyboardMarkup markup = AppEnv.getContext().getMenuManager().keyboardMain();
-//                answerMessage.setReplyMarkup(markup);
-//            }
+            if (SELECT_DATE_ACTION.equals(action.getName())) {
+                answerMessage = new SendMessage();
+                answerMessage.setText("<b>Выберите час записи</b>");
+                InlineKeyboardMarkup markup = keyboardInDay(from, action); 
+                answerMessage.setReplyMarkup(markup);
+            }
 
         } catch (Exception ex) {
             Logger.getLogger(ScheduleInfoManager.class.getName()).log(Level.SEVERE, null, ex);
