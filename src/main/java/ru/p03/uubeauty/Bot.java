@@ -6,13 +6,10 @@
 package ru.p03.uubeauty;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
-import org.telegram.telegrambots.api.objects.User;
-import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
@@ -96,7 +93,8 @@ public class Bot extends TelegramLongPollingBot {
                 return;
             }
             
-            ScheduleInfoManager sim = new ScheduleInfoManager(LocalDateTime.now(),  AppEnv.getContext().getMarschaller());
+            ScheduleInfoManager sim = new ScheduleInfoManager(LocalDateTime.now(),  
+                    AppEnv.getContext().getMarschaller(), AppEnv.getContext().getStateHolder());
             answerMessage = sim.processCallbackQuery(update);
             
             if (answerMessage != null){               

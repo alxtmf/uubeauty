@@ -18,6 +18,8 @@ import ru.p03.uubeautyi.bot.document.spi.DocumentMarshalerAggregator;
 import ru.p03.uubeauty.model.ClsDocType;
 import ru.p03.uubeauty.bot.schema.Action;
 import ru.p03.uubeauty.AppEnv;
+import ru.p03.uubeauty.State;
+import ru.p03.uubeauty.StateHolder;
 import ru.p03.uubeauty.model.ClsEmployee;
 import ru.p03.uubeauty.model.repository.ClassifierRepository;
 
@@ -27,16 +29,19 @@ import ru.p03.uubeauty.model.repository.ClassifierRepository;
  */
 public class EmployeeManager {
 
-    public static final String VIEW_MESSAGE_INFO = "VIEW_MSG";
+    public static final String SELECT_EMPLOYEE = "SEMEE";
     public static final String MESSAGE_CODE = "MESSAGE_CODE";
 
     //private final InfoMessageList data;
     private final DocumentMarshalerAggregator marshalFactory;
     private final ClassifierRepository classifierRepository;
+    private final StateHolder stateHolder;
 
-    public EmployeeManager(ClassifierRepository classifierRepository, DocumentMarshalerAggregator marshalFactory) {
+    public EmployeeManager(ClassifierRepository classifierRepository, 
+            DocumentMarshalerAggregator marshalFactory, StateHolder stateHolder) {
         this.classifierRepository = classifierRepository;
         this.marshalFactory = marshalFactory;
+        this.stateHolder = stateHolder;
     }
 
 
@@ -72,7 +77,7 @@ public class EmployeeManager {
         InlineKeyboardButton button = new InlineKeyboardButton();
         button.setText(t.getFamiliaIO());
         Action action = new Action();
-        action.setName(VIEW_MESSAGE_INFO);
+        action.setName(SELECT_EMPLOYEE);
 //        Param param = new Param();
 //        param.setName(MESSAGE_CODE);
         action.setValue(t.getId().toString());
@@ -104,11 +109,12 @@ public class EmployeeManager {
                 answerMessage.setReplyMarkup(markup);
             }
 
-//            if (VIEW_MESSAGE_INFO.equals(action.getName())) {
+            if (SELECT_EMPLOYEE.equals(action.getName())) {
+                stateHolder.put(update, new State(action, null));
 //                answerMessage = infoMessage(action);
 //                InlineKeyboardMarkup markup = AppEnv.getContext().getMenuManager().keyboardMain();
 //                answerMessage.setReplyMarkup(markup);
-//            }
+            }
 
         } catch (Exception ex) {
             Logger.getLogger(EmployeeManager.class.getName()).log(Level.SEVERE, null, ex);

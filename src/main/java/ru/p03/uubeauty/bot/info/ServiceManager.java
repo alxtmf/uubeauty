@@ -7,11 +7,9 @@ package ru.p03.uubeauty.bot.info;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -19,10 +17,9 @@ import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboar
 import ru.p03.uubeautyi.bot.document.spi.DocumentMarshalerAggregator;
 import ru.p03.uubeauty.model.ClsDocType;
 import ru.p03.uubeauty.bot.schema.Action;
-import ru.p03.uubeauty.bot.schema.InfoMessage;
-import ru.p03.uubeauty.bot.schema.InfoMessageList;
-import ru.p03.uubeauty.bot.schema.Param;
 import ru.p03.uubeauty.AppEnv;
+import ru.p03.uubeauty.State;
+import ru.p03.uubeauty.StateHolder;
 import ru.p03.uubeauty.model.ClsService;
 import ru.p03.uubeauty.model.repository.ClassifierRepository;
 
@@ -32,15 +29,18 @@ import ru.p03.uubeauty.model.repository.ClassifierRepository;
  */
 public class ServiceManager {
 
-    public static final String VIEW_MESSAGE_INFO = "VIEW_MSG";
+    public static final String SELECT_SERVICE = "SESE";
     public static final String MESSAGE_CODE = "MESSAGE_CODE";
 
     private final ClassifierRepository classifierRepository;
     private final DocumentMarshalerAggregator marshalFactory;
+    private final StateHolder stateHolder;
 
-    public ServiceManager(ClassifierRepository classifierRepository, DocumentMarshalerAggregator marshalFactory) {
+    public ServiceManager(ClassifierRepository classifierRepository, 
+            DocumentMarshalerAggregator marshalFactory, StateHolder stateHolder) {
         this.classifierRepository = classifierRepository;
         this.marshalFactory = marshalFactory;
+        this.stateHolder = stateHolder;
     }
 
 
@@ -76,7 +76,7 @@ public class ServiceManager {
          InlineKeyboardButton button = new InlineKeyboardButton();
         button.setText(t.getName());
         Action action = new Action();
-        action.setName(VIEW_MESSAGE_INFO);
+        action.setName(SELECT_SERVICE);
 //        Param param = new Param();
 //        param.setName(MESSAGE_CODE);
         action.setValue(t.getId().toString());
@@ -108,11 +108,12 @@ public class ServiceManager {
                 answerMessage.setReplyMarkup(markup);
             }
 
-//            if (VIEW_MESSAGE_INFO.equals(action.getName())) {
-//                answerMessage = infoMessage(action);
-//                InlineKeyboardMarkup markup = AppEnv.getContext().getMenuManager().keyboardMain();
-//                answerMessage.setReplyMarkup(markup);
-//            }
+            if (SELECT_SERVICE.equals(action.getName())) {
+                stateHolder.put(update, new State(action, null));
+                //answerMessage = infoMessage(action);
+                //InlineKeyboardMarkup markup = AppEnv.getContext().getMenuManager().keyboardMain();
+                //answerMessage.setReplyMarkup(markup);
+            }
 
         } catch (Exception ex) {
             Logger.getLogger(ServiceManager.class.getName()).log(Level.SEVERE, null, ex);

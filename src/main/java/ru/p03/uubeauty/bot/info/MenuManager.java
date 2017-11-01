@@ -14,6 +14,7 @@ import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import ru.p03.uubeauty.StateHolder;
 import ru.p03.uubeautyi.bot.document.spi.DocumentMarshalerAggregator;
 import ru.p03.uubeauty.model.ClsDocType;
 import ru.p03.uubeauty.bot.schema.Action;
@@ -33,9 +34,11 @@ public class MenuManager {
     public static final String OPEN_SERVICE_LIST = "OPEN_SERVICE_LIST";
     
     private final DocumentMarshalerAggregator marshalFactory;
+    private final StateHolder stateHolder;
     
-    public MenuManager(DocumentMarshalerAggregator marshalFactory) {
+    public MenuManager(DocumentMarshalerAggregator marshalFactory, StateHolder stateHolder) {
         this.marshalFactory = marshalFactory;
+        this.stateHolder = stateHolder;
     }
 
     public SendMessage processCommand(Update update) {
@@ -67,6 +70,7 @@ public class MenuManager {
                 answerMessage = new SendMessage();
                 InlineKeyboardMarkup markup = keyboard();
                 answerMessage.setReplyMarkup(markup);
+                stateHolder.remove(update);
             }
         } catch (Exception ex) {
             Logger.getLogger(ScheduleInfoManager.class.getName()).log(Level.SEVERE, null, ex);

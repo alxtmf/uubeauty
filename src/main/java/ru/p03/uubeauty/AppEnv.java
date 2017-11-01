@@ -64,6 +64,8 @@ public class AppEnv {
     private EmployeeManager employeeManager;
     private MenuManager menuManager;
     
+    private StateHolder stateHolder;
+    
     private AppEnv(){
         
     }
@@ -84,13 +86,13 @@ public class AppEnv {
         //try {
             //xml = ResourceUtils.readFile(filePathService);
             //InfoMessageList data = marshalFactory.<InfoMessageList>unmarshal(xml, ClsDocType.SERVICE_INFO);
-            serviceManager = new ServiceManager(classifierRepository, marshalFactory);
+            serviceManager = new ServiceManager(classifierRepository, marshalFactory, stateHolder);
             
-            menuManager = new MenuManager(marshalFactory);
+            menuManager = new MenuManager(marshalFactory, stateHolder);
             
             //xml = ResourceUtils.readFile(filePathEmployee);
             //InfoMessageList dataInfoMessage = marshalFactory.<InfoMessageList>unmarshal(xml, ClsDocType.EMPLOYEE_LIST);
-            employeeManager = new EmployeeManager(classifierRepository, marshalFactory);          
+            employeeManager = new EmployeeManager(classifierRepository, marshalFactory, stateHolder);          
             
         //} catch (IOException ex) {
         //    Logger.getLogger(AppEnv.class.getName()).log(Level.SEVERE, null, ex);
@@ -165,6 +167,10 @@ public class AppEnv {
         return marshalFactory;
     } 
     
+    public StateHolder getStateHolder(){
+        return stateHolder;
+    }
+    
     public void init(String propFileName){
         initProperties(propFileName);
         initMarschaller();
@@ -183,8 +189,10 @@ public class AppEnv {
         
         ((ClassifierRepositoryImpl)getClassifierRepository()).setDAO(dao);
         
+        stateHolder = new StateHolder();
+        
         initMarschaller();
-        initManagers();
+        initManagers();            
     }
     
     public static AppEnv getContext(String propFileName){ //https://habrahabr.ru/post/129494/

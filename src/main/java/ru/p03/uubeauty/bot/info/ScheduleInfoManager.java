@@ -6,17 +6,13 @@
 package ru.p03.uubeauty.bot.info;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
@@ -30,6 +26,8 @@ import ru.p03.uubeauty.bot.schema.Action;
 //import ru.p03.uubeauty.bot.schema.Schedule;
 //import ru.p03.uubeauty.bot.schema.ScheduleInfo;
 import ru.p03.uubeauty.AppEnv;
+import ru.p03.uubeauty.State;
+import ru.p03.uubeauty.StateHolder;
 
 /**
  *
@@ -60,10 +58,12 @@ public class ScheduleInfoManager {
 //
 //    private final DataList data;
     private final DocumentMarshalerAggregator marshalFactory;
+    private final StateHolder stateHolder;
 //
-    public ScheduleInfoManager(LocalDateTime now, DocumentMarshalerAggregator marshalFactory) {
+    public ScheduleInfoManager(LocalDateTime now, DocumentMarshalerAggregator marshalFactory, StateHolder stateHolder) {
         this.now = now;
         this.marshalFactory = marshalFactory;
+        this.stateHolder = stateHolder;
     }
 //
 //    public SendMessage processCommand(Update update) {
@@ -195,6 +195,11 @@ public class ScheduleInfoManager {
                 answerMessage.setText("<b>Выберите час записи</b>");
                 InlineKeyboardMarkup markup = keyboardInDay(from, action); 
                 answerMessage.setReplyMarkup(markup);
+                stateHolder.put(update, new State(action, null));
+            }
+            
+            if (SELECT_HOUR_ACTION.equals(action.getName())) {
+                stateHolder.put(update, new State(action, null));
             }
 
         } catch (Exception ex) {
