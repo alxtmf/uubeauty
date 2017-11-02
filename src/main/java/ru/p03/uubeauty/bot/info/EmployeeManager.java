@@ -110,6 +110,10 @@ public class EmployeeManager {
             }
 
             if (SELECT_EMPLOYEE.equals(action.getName())) {
+                AppEnv.getContext().getMenuManager().keyboard(false, 
+                        stateHolder.contains(update, ScheduleInfoManager.SELECT_DATE_ACTION,
+                        ScheduleInfoManager.SELECT_HOUR_ACTION),
+                        stateHolder.contains(update, ServiceManager.SELECT_SERVICE));
                 stateHolder.put(update, new State(action, null));
 //                answerMessage = infoMessage(action);
 //                InlineKeyboardMarkup markup = AppEnv.getContext().getMenuManager().keyboardMain();

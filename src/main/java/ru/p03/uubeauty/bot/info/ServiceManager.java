@@ -30,7 +30,7 @@ import ru.p03.uubeauty.model.repository.ClassifierRepository;
 public class ServiceManager {
 
     public static final String SELECT_SERVICE = "SESE";
-    public static final String MESSAGE_CODE = "MESSAGE_CODE";
+    //public static final String MESSAGE_CODE = "MESSAGE_CODE";
 
     private final ClassifierRepository classifierRepository;
     private final DocumentMarshalerAggregator marshalFactory;
@@ -42,8 +42,7 @@ public class ServiceManager {
         this.marshalFactory = marshalFactory;
         this.stateHolder = stateHolder;
     }
-
-
+   
     public List<InlineKeyboardButton> buttons(Update update) {
         final List<InlineKeyboardButton> buttons = new ArrayList<>();
 
@@ -109,6 +108,11 @@ public class ServiceManager {
             }
 
             if (SELECT_SERVICE.equals(action.getName())) {
+                AppEnv.getContext().getMenuManager().keyboard(
+                        stateHolder.contains(update, EmployeeManager.SELECT_EMPLOYEE), 
+                        stateHolder.contains(update, ScheduleInfoManager.SELECT_DATE_ACTION,
+                        ScheduleInfoManager.SELECT_HOUR_ACTION), 
+                        false);
                 stateHolder.put(update, new State(action, null));
                 //answerMessage = infoMessage(action);
                 //InlineKeyboardMarkup markup = AppEnv.getContext().getMenuManager().keyboardMain();

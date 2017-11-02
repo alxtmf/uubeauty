@@ -199,6 +199,10 @@ public class ScheduleInfoManager {
             }
             
             if (SELECT_HOUR_ACTION.equals(action.getName())) {
+                AppEnv.getContext().getMenuManager().keyboard(
+                        stateHolder.contains(update, EmployeeManager.SELECT_EMPLOYEE), 
+                        false, 
+                        stateHolder.contains(update, ServiceManager.SELECT_SERVICE));
                 stateHolder.put(update, new State(action, null));
             }
 

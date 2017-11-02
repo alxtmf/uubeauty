@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.stream.Collectors;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.User;
 
@@ -80,5 +81,30 @@ public class StateHolder {
     public State getFirst(Update update){
         User u = update.getMessage().getFrom();
         return getFirst(u);
+    }
+    
+    public boolean contains(User user, State... statelist){
+        boolean result = false;
+        if (states.containsKey(user)){
+            List<State> list = states.get(user);
+            result = list.containsAll(Arrays.asList(statelist));
+        }
+        return result;
+    }
+    
+    public boolean contains(User user, String... statelist){
+        boolean result = false;
+        if (states.containsKey(user)){
+            List<State> list = states.get(user);
+            result = list.stream().map((s) -> s.getAction().getName())
+                    .collect(Collectors.toList())
+                    .containsAll(Arrays.asList(statelist));
+        }
+        return result;
+    }
+    
+    public boolean contains(Update update, String... statelist){
+        User u = update.getMessage().getFrom();
+        return contains(u, statelist);
     }
 }
