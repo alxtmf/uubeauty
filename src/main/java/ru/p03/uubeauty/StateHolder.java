@@ -20,73 +20,73 @@ import org.telegram.telegrambots.api.objects.User;
  * @author altmf
  */
 public class StateHolder {
-    Map<User, List<State>> states =  new HashMap<>();
+    Map<Integer, List<State>> states =  new HashMap<>();
     
     public StateHolder(){
         
     }
     
     public void put (User user, State state){
-        if (states.containsKey(user)){
-            states.get(user).add(state);
+        if (states.containsKey(user.getId())){
+            states.get(user.getId()).add(state);
         }else{
-            states.put(user, new ArrayList<>(Arrays.asList(state)));
+            states.put(user.getId(), new ArrayList<>(Arrays.asList(state)));
         }
     }
     
     public List<State> get(User user){
-        return states.get(user) == null ? new ArrayList<>() : states.get(user);
+        return states.get(user.getId()) == null ? new ArrayList<>() : states.get(user);
     }
     
     public List<State> remove (User user){
-        return states.remove(user);
+        return states.remove(user.getId());
     }
     
     public State getLast(User user){
         State s = null;
-        if (states.containsKey(user)){
-            s = states.get(user).get(states.get(user).size() - 1);
+        if (states.containsKey(user.getId())){
+            s = states.get(user.getId()).get(states.get(user.getId()).size() - 1);
         }
         return s;
     }
     
     public State getFirst(User user){
         State s = null;
-        if (states.containsKey(user)){
-            s = states.get(user).get(0);
+        if (states.containsKey(user.getId())){
+            s = states.get(user.getId()).get(0);
         }
         return s;
     }
     
     public void put (Update update, State state){
-        User u = update.getMessage().getFrom();
+        User u = getUserFromUpdate(update);
         put(u, state);
     }
     
     public List<State> get(Update update){
-        User u = update.getMessage().getFrom();
+        User u = getUserFromUpdate(update);
         return get(u);
     }
     
     public List<State> remove (Update update){
-        User u = update.getMessage().getFrom();
+        User u = getUserFromUpdate(update);
         return remove(u);
     }
     
     public State getLast(Update update){
-        User u = update.getMessage().getFrom();
+        User u = getUserFromUpdate(update);
         return getLast(u);
     }
     
     public State getFirst(Update update){
-        User u = update.getMessage().getFrom();
+        User u = getUserFromUpdate(update);
         return getFirst(u);
     }
     
     public boolean contains(User user, State... statelist){
         boolean result = false;
-        if (states.containsKey(user)){
-            List<State> list = states.get(user);
+        if (states.containsKey(user.getId())){
+            List<State> list = states.get(user.getId());
             result = list.containsAll(Arrays.asList(statelist));
         }
         return result;
@@ -94,8 +94,8 @@ public class StateHolder {
     
     public boolean contains(User user, String... statelist){
         boolean result = false;
-        if (states.containsKey(user)){
-            List<State> list = states.get(user);
+        if (states.containsKey(user.getId())){
+            List<State> list = states.get(user.getId());
             result = list.stream().map((s) -> s.getAction().getName())
                     .collect(Collectors.toList())
                     .containsAll(Arrays.asList(statelist));
@@ -104,7 +104,12 @@ public class StateHolder {
     }
     
     public boolean contains(Update update, String... statelist){
-        User u = update.getMessage().getFrom();
+        User u = getUserFromUpdate(update);
         return contains(u, statelist);
+    }
+    
+    private User getUserFromUpdate(Update update){
+        return update.getMessage() != null ? update.getMessage().getFrom()
+                : update.getCallbackQuery().getFrom();
     }
 }

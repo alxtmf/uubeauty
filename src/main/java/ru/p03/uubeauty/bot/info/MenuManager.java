@@ -32,6 +32,9 @@ public class MenuManager {
 
     public static final String OPEN_EMPLOYEE_LIST = "OPEN_EMPLOYEE_LIST";
     public static final String OPEN_SERVICE_LIST = "OPEN_SERVICE_LIST";
+    
+    public static final String ACEPT_ORDER = "ACPO";
+    public static final String APROVE_ORDER = "APRO";
 
     private final DocumentMarshalerAggregator marshalFactory;
     private final StateHolder stateHolder;
@@ -66,15 +69,39 @@ public class MenuManager {
                 return null;
             }
 
-            if (MenuManager.OPEN_MAIN.equals(action.getName())) {
+            if (MenuManager.OPEN_MAIN.equals(action.getName()) || MenuManager.APROVE_ORDER.equals(action.getName())) {
                 answerMessage = new SendMessage();
                 InlineKeyboardMarkup markup = keyboard();
+                answerMessage.setText("<b>Нажмите на кнопку, чтобы начать запись</b>");
                 answerMessage.setReplyMarkup(markup);
+                stateHolder.remove(update);
+            }
+            
+            if (MenuManager.ACEPT_ORDER.equals(action.getName())) {
+                answerMessage = new SendMessage();
+                answerMessage.setText("Спасибо, вы записаны");
                 stateHolder.remove(update);
             }
         } catch (Exception ex) {
             Logger.getLogger(ScheduleInfoManager.class.getName()).log(Level.SEVERE, null, ex);
+            answerMessage = errorMessage();
         }
+        return answerMessage;
+    }
+    
+    public SendMessage errorMessage(){
+        SendMessage answerMessage = new SendMessage();
+        answerMessage.setText("Ой, что-то пошло не так, попробуйте еще раз или перейдите в главное меню");
+        InlineKeyboardMarkup keyboardMain = keyboardMain();
+        answerMessage.setReplyMarkup(keyboardMain);
+        return answerMessage;
+    }
+    
+    public SendMessage aceptOrderMessage(){
+        SendMessage answerMessage = new SendMessage();
+        answerMessage.setText("Подтвердите предварительную запись");
+        InlineKeyboardMarkup keyboardMain = keyboardMain();
+        answerMessage.setReplyMarkup(keyboardMain);
         return answerMessage;
     }
 
@@ -148,6 +175,35 @@ public class MenuManager {
         button.setText("Главное меню");
         Action action = new Action();
         action.setName(OPEN_MAIN);
+        String clbData = marshalFactory.<Action>marshal(action, ClsDocType.ACTION);
+        button.setCallbackData(clbData);
+        return button;
+    }
+    
+    public InlineKeyboardMarkup keyboardAceptOrder(){
+        final InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
+        keyboard.add(Arrays.asList(buttonAceptOrder()));
+        keyboard.add(Arrays.asList(buttonAproveOrder()));
+        markup.setKeyboard(keyboard);
+        return markup;
+    }
+
+    public InlineKeyboardButton buttonAceptOrder() {
+        InlineKeyboardButton button = new InlineKeyboardButton();
+        button.setText("Я подтверждаю заказ");
+        Action action = new Action();
+        action.setName(ACEPT_ORDER);
+        String clbData = marshalFactory.<Action>marshal(action, ClsDocType.ACTION);
+        button.setCallbackData(clbData);
+        return button;
+    }
+    
+    public InlineKeyboardButton buttonAproveOrder() {
+        InlineKeyboardButton button = new InlineKeyboardButton();
+        button.setText("Я отказываюсь");
+        Action action = new Action();
+        action.setName(APROVE_ORDER);
         String clbData = marshalFactory.<Action>marshal(action, ClsDocType.ACTION);
         button.setCallbackData(clbData);
         return button;

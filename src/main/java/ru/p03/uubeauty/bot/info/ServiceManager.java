@@ -36,13 +36,13 @@ public class ServiceManager {
     private final DocumentMarshalerAggregator marshalFactory;
     private final StateHolder stateHolder;
 
-    public ServiceManager(ClassifierRepository classifierRepository, 
+    public ServiceManager(ClassifierRepository classifierRepository,
             DocumentMarshalerAggregator marshalFactory, StateHolder stateHolder) {
         this.classifierRepository = classifierRepository;
         this.marshalFactory = marshalFactory;
         this.stateHolder = stateHolder;
     }
-   
+
     public List<InlineKeyboardButton> buttons(Update update) {
         final List<InlineKeyboardButton> buttons = new ArrayList<>();
 
@@ -72,7 +72,7 @@ public class ServiceManager {
     }
 
     private InlineKeyboardButton fromClsService(ClsService t, Update update) {
-         InlineKeyboardButton button = new InlineKeyboardButton();
+        InlineKeyboardButton button = new InlineKeyboardButton();
         button.setText(t.getName());
         Action action = new Action();
         action.setName(SELECT_SERVICE);
@@ -103,24 +103,30 @@ public class ServiceManager {
             if (MenuManager.OPEN_SERVICE_LIST.equals(action.getName())) {
                 answerMessage = new SendMessage();
                 answerMessage.setText("<b>Выберите услугу:</b>");
-                InlineKeyboardMarkup markup = keyboard(update);             
+                InlineKeyboardMarkup markup = keyboard(update);
                 answerMessage.setReplyMarkup(markup);
             }
 
             if (SELECT_SERVICE.equals(action.getName())) {
-                AppEnv.getContext().getMenuManager().keyboard(
-                        stateHolder.contains(update, EmployeeManager.SELECT_EMPLOYEE), 
-                        stateHolder.contains(update, ScheduleInfoManager.SELECT_DATE_ACTION,
-                        ScheduleInfoManager.SELECT_HOUR_ACTION), 
-                        false);
-                stateHolder.put(update, new State(action, null));
-                //answerMessage = infoMessage(action);
-                //InlineKeyboardMarkup markup = AppEnv.getContext().getMenuManager().keyboardMain();
-                //answerMessage.setReplyMarkup(markup);
+                answerMessage = new SendMessage();
+                InlineKeyboardMarkup markup = null;
+                boolean isEmployeeSelect = stateHolder.contains(update, EmployeeManager.SELECT_EMPLOYEE);
+                boolean isSheduleSelect = stateHolder.contains(update, ScheduleInfoManager.SELECT_DATE_ACTION,
+                        ScheduleInfoManager.SELECT_HOUR_ACTION);
+                if (isEmployeeSelect && isSheduleSelect) {
+                    markup = AppEnv.getContext().getMenuManager().keyboardAceptOrder();
+                    answerMessage.setText("<b>Осталось подтвердить запись</b>");
+                } else {
+                    markup = AppEnv.getContext().getMenuManager().keyboard(
+                            !isEmployeeSelect, !isSheduleSelect, false);
+                    stateHolder.put(update, new State(action, null));
+                }
+                answerMessage.setReplyMarkup(markup);
             }
 
         } catch (Exception ex) {
             Logger.getLogger(ServiceManager.class.getName()).log(Level.SEVERE, null, ex);
+            answerMessage = AppEnv.getContext().getMenuManager().errorMessage();
         }
         return answerMessage;
     }

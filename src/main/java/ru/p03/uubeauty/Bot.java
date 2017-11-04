@@ -67,8 +67,7 @@ public class Bot extends TelegramLongPollingBot {
                        
             answerMessage = AppEnv.getContext().getMenuManager().processCallbackQuery(update);
             
-            if (answerMessage != null) {  
-                answerMessage.setText("<b>Нажмите на кнопку, чтобы начать запись</b>");
+            if (answerMessage != null) {                 
                 answerMessage.setParseMode("HTML");
                 answerMessage.setChatId(chatId);
                 sendMessage(answerMessage);

@@ -37,13 +37,12 @@ public class EmployeeManager {
     private final ClassifierRepository classifierRepository;
     private final StateHolder stateHolder;
 
-    public EmployeeManager(ClassifierRepository classifierRepository, 
+    public EmployeeManager(ClassifierRepository classifierRepository,
             DocumentMarshalerAggregator marshalFactory, StateHolder stateHolder) {
         this.classifierRepository = classifierRepository;
         this.marshalFactory = marshalFactory;
         this.stateHolder = stateHolder;
     }
-
 
     public List<InlineKeyboardButton> buttons(Update update) {
         final List<InlineKeyboardButton> buttons = new ArrayList<>();
@@ -105,23 +104,31 @@ public class EmployeeManager {
             if (MenuManager.OPEN_EMPLOYEE_LIST.equals(action.getName())) {
                 answerMessage = new SendMessage();
                 answerMessage.setText("<b>Выберите мастера</b>");
-                InlineKeyboardMarkup markup = keyboard(update);             
+                InlineKeyboardMarkup markup = keyboard(update);
                 answerMessage.setReplyMarkup(markup);
             }
 
             if (SELECT_EMPLOYEE.equals(action.getName())) {
-                AppEnv.getContext().getMenuManager().keyboard(false, 
-                        stateHolder.contains(update, ScheduleInfoManager.SELECT_DATE_ACTION,
-                        ScheduleInfoManager.SELECT_HOUR_ACTION),
-                        stateHolder.contains(update, ServiceManager.SELECT_SERVICE));
-                stateHolder.put(update, new State(action, null));
-//                answerMessage = infoMessage(action);
-//                InlineKeyboardMarkup markup = AppEnv.getContext().getMenuManager().keyboardMain();
-//                answerMessage.setReplyMarkup(markup);
+                answerMessage = new SendMessage();
+                InlineKeyboardMarkup markup = null;
+                boolean isSheduleSelect = stateHolder.contains(update, ScheduleInfoManager.SELECT_DATE_ACTION,
+                        ScheduleInfoManager.SELECT_HOUR_ACTION);
+                boolean isServiceSelect = stateHolder.contains(update, ServiceManager.SELECT_SERVICE);
+                if (isSheduleSelect && isServiceSelect) {
+                    markup = AppEnv.getContext().getMenuManager().keyboardAceptOrder();
+                    answerMessage.setText("<b>Осталось подтвердить запись</b>");
+                } else {
+                    markup = AppEnv.getContext().getMenuManager().keyboard(false,
+                            !isSheduleSelect, !isServiceSelect);
+                    stateHolder.put(update, new State(action, null));
+                    answerMessage.setText("<b>Продолжаем:</b>");  
+                }
+                answerMessage.setReplyMarkup(markup);
             }
 
         } catch (Exception ex) {
             Logger.getLogger(EmployeeManager.class.getName()).log(Level.SEVERE, null, ex);
+            answerMessage = AppEnv.getContext().getMenuManager().errorMessage();
         }
         return answerMessage;
     }
