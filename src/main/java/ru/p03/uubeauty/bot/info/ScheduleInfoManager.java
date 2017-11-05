@@ -22,9 +22,6 @@ import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboar
 import ru.p03.uubeautyi.bot.document.spi.DocumentMarshalerAggregator;
 import ru.p03.uubeauty.model.ClsDocType;
 import ru.p03.uubeauty.bot.schema.Action;
-//import ru.p03.uubeauty.bot.schema.DataList;
-//import ru.p03.uubeauty.bot.schema.Schedule;
-//import ru.p03.uubeauty.bot.schema.ScheduleInfo;
 import ru.p03.uubeauty.AppEnv;
 import ru.p03.uubeauty.State;
 import ru.p03.uubeauty.StateHolder;
@@ -54,30 +51,14 @@ public class ScheduleInfoManager {
     }
     public static final String SELECT_DATE_ACTION = "SELDTA";
     public static final String SELECT_HOUR_ACTION = "SELHR";
-//    public static final String FILIAL_CODE = "FILIAL_CODE";
-//
-//    private final DataList data;
     private final DocumentMarshalerAggregator marshalFactory;
     private final StateHolder stateHolder;
-//
 
     public ScheduleInfoManager(LocalDateTime now, DocumentMarshalerAggregator marshalFactory, StateHolder stateHolder) {
         this.now = now;
         this.marshalFactory = marshalFactory;
         this.stateHolder = stateHolder;
     }
-//
-//    public SendMessage processCommand(Update update) {
-//        SendMessage answerMessage = null;
-//        String text = update.getMessage().getText();
-//        if ("/start".equalsIgnoreCase(text)) {
-//            answerMessage = new SendMessage();
-//            InlineKeyboardMarkup markup = keyboard();
-//            answerMessage.setReplyMarkup(markup);
-//        }
-//        return answerMessage;
-//    }
-//
 
     private InlineKeyboardButton dayToButton(User from, LocalDateTime ldt) {
         InlineKeyboardButton button = new InlineKeyboardButton();
@@ -93,7 +74,6 @@ public class ScheduleInfoManager {
         Action action = new Action();
         action.setName(SELECT_DATE_ACTION);
         action.setValue(ldt.toLocalDate().toString());
-        //action.setId(from.getId().toString());
         String clbData = marshalFactory.<Action>marshal(action, ClsDocType.ACTION);
         button.setCallbackData(clbData);
         return button;
@@ -106,7 +86,6 @@ public class ScheduleInfoManager {
         Action action = new Action();
         action.setName(SELECT_HOUR_ACTION);
         action.setValue(ldt.toString());
-        //action.setId(from.getId().toString());
         String clbData = marshalFactory.<Action>marshal(action, ClsDocType.ACTION);
         button.setCallbackData(clbData);
         return button;
@@ -123,7 +102,7 @@ public class ScheduleInfoManager {
 
     private List<Long> getNextHours() {
         final List<Long> h = new ArrayList<>();
-        LocalDateTime _now = LocalDateTime.of(now.toLocalDate(), now.toLocalTime());
+        //LocalDateTime _now = LocalDateTime.of(now.toLocalDate(), now.toLocalTime());
         LongStream.rangeClosed(minHour, maxHour).forEach((i) -> {
             h.add(i);
         });
@@ -138,7 +117,6 @@ public class ScheduleInfoManager {
         });
         return buttons;
     }
-//
 
     public InlineKeyboardMarkup keyboard(User from) {
         final InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
@@ -208,7 +186,8 @@ public class ScheduleInfoManager {
                 boolean isServiceSelect = stateHolder.contains(update, ServiceManager.SELECT_SERVICE);
                 if (isEmployeeSelect && isServiceSelect) {
                     markup = AppEnv.getContext().getMenuManager().keyboardAceptOrder();
-                    answerMessage.setText("<b>Осталось подтвердить запись</b>");
+                    answerMessage.setText(AppEnv.getContext().getMenuManager().getOrderDescription(update)
+                            + "\n<b>Осталось подтвердить запись</b>");
                 } else {
                     markup = AppEnv.getContext().getMenuManager().keyboard(
                             !isEmployeeSelect, false, !isServiceSelect);

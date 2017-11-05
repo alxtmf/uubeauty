@@ -33,6 +33,8 @@ public interface ClassifierRepository {
 	 */
 	<T extends Classifier> List<T> find(Class<T> clazz);
         
+        <T extends Classifier> T find(Class<T> clazz, Long id);
+        
         <T extends Classifier> List<T> find(Class<T> clazz, boolean isDeleted);
 	
 	<T extends Classifier> List<T> getAll(Class<T> clazz);

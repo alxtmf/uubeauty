@@ -14,10 +14,14 @@ import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import ru.p03.uubeauty.State;
 import ru.p03.uubeauty.StateHolder;
 import ru.p03.uubeautyi.bot.document.spi.DocumentMarshalerAggregator;
 import ru.p03.uubeauty.model.ClsDocType;
 import ru.p03.uubeauty.bot.schema.Action;
+import ru.p03.uubeauty.model.ClsEmployee;
+import ru.p03.uubeauty.model.ClsService;
+import ru.p03.uubeauty.model.repository.ClassifierRepository;
 
 /**
  *
@@ -32,18 +36,21 @@ public class MenuManager {
 
     public static final String OPEN_EMPLOYEE_LIST = "OPEN_EMPLOYEE_LIST";
     public static final String OPEN_SERVICE_LIST = "OPEN_SERVICE_LIST";
-    
+
     public static final String ACEPT_ORDER = "ACPO";
     public static final String APROVE_ORDER = "APRO";
 
     private final DocumentMarshalerAggregator marshalFactory;
     private final StateHolder stateHolder;
+    private final ClassifierRepository classifierRepository;
 
-    public MenuManager(DocumentMarshalerAggregator marshalFactory, StateHolder stateHolder) {
+    public MenuManager(ClassifierRepository classifierRepository,
+            DocumentMarshalerAggregator marshalFactory, StateHolder stateHolder) {
         this.marshalFactory = marshalFactory;
         this.stateHolder = stateHolder;
+        this.classifierRepository = classifierRepository;
     }
-   
+
     public SendMessage processCommand(Update update) {
         SendMessage answerMessage = null;
         String text = update.getMessage().getText();
@@ -76,9 +83,15 @@ public class MenuManager {
                 answerMessage.setReplyMarkup(markup);
                 stateHolder.remove(update);
             }
-            
+
             if (MenuManager.ACEPT_ORDER.equals(action.getName())) {
                 answerMessage = new SendMessage();
+
+                State emplState = stateHolder.getLast(update, EmployeeManager.SELECT_EMPLOYEE);
+                State servState = stateHolder.getLast(update, ServiceManager.SELECT_SERVICE);
+                State dateState = stateHolder.getLast(update, ScheduleInfoManager.SELECT_DATE_ACTION);
+                State hourState = stateHolder.getLast(update, ScheduleInfoManager.SELECT_HOUR_ACTION);
+
                 answerMessage.setText("Спасибо, вы записаны");
                 stateHolder.remove(update);
             }
@@ -88,16 +101,31 @@ public class MenuManager {
         }
         return answerMessage;
     }
-    
-    public SendMessage errorMessage(){
+
+    public String getOrderDescription(Update update) {
+        State emplState = stateHolder.getLast(update, EmployeeManager.SELECT_EMPLOYEE);
+        State servState = stateHolder.getLast(update, ServiceManager.SELECT_SERVICE);
+        State dateState = stateHolder.getLast(update, ScheduleInfoManager.SELECT_DATE_ACTION);
+        State hourState = stateHolder.getLast(update, ScheduleInfoManager.SELECT_HOUR_ACTION);
+        
+        ClsEmployee employee = classifierRepository.find(ClsEmployee.class, (Long)emplState.getValue());
+        ClsService service = classifierRepository.find(ClsService.class, (Long)servState.getValue());
+        
+        String text = "Вы записаны на " + dateState.getValue() + " " + hourState.getValue()
+                + " к " + employee.getFamiliaIO() + " на " + service.getName();
+        
+        return text;
+    }
+
+    public SendMessage errorMessage() {
         SendMessage answerMessage = new SendMessage();
         answerMessage.setText("Ой, что-то пошло не так, попробуйте еще раз или перейдите в главное меню");
         InlineKeyboardMarkup keyboardMain = keyboardMain();
         answerMessage.setReplyMarkup(keyboardMain);
         return answerMessage;
     }
-    
-    public SendMessage aceptOrderMessage(){
+
+    public SendMessage aceptOrderMessage() {
         SendMessage answerMessage = new SendMessage();
         answerMessage.setText("Подтвердите предварительную запись");
         InlineKeyboardMarkup keyboardMain = keyboardMain();
@@ -107,13 +135,6 @@ public class MenuManager {
 
     public InlineKeyboardMarkup keyboard() {
         return keyboard(true, true, true);
-//        final InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
-//        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
-//        keyboard.add(Arrays.asList(employeeListButton()));
-//        keyboard.add(Arrays.asList(sheduleListButton()));
-//        keyboard.add(Arrays.asList(serviceListButton()));
-//        markup.setKeyboard(keyboard);
-//        return markup;
     }
 
     public InlineKeyboardMarkup keyboard(boolean showEmployeeList, boolean showSheduleList, boolean showServiceList) {
@@ -162,7 +183,7 @@ public class MenuManager {
         return button;
     }
 
-    public InlineKeyboardMarkup keyboardMain(){
+    public InlineKeyboardMarkup keyboardMain() {
         final InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
         keyboard.add(Arrays.asList(buttonMain()));
@@ -179,8 +200,8 @@ public class MenuManager {
         button.setCallbackData(clbData);
         return button;
     }
-    
-    public InlineKeyboardMarkup keyboardAceptOrder(){
+
+    public InlineKeyboardMarkup keyboardAceptOrder() {
         final InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
         keyboard.add(Arrays.asList(buttonAceptOrder()));
@@ -198,7 +219,7 @@ public class MenuManager {
         button.setCallbackData(clbData);
         return button;
     }
-    
+
     public InlineKeyboardButton buttonAproveOrder() {
         InlineKeyboardButton button = new InlineKeyboardButton();
         button.setText("Я отказываюсь");

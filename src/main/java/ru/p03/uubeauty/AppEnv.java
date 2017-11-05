@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ru.p03.uubeauty;
 
 import java.io.File;
@@ -41,33 +40,33 @@ import ru.p03.uubeautyi.bot.document.spi.JsonDocumentMarshallerImpl;
  * @author timofeevan
  */
 public class AppEnv {
-    
+
     public static String ROOT_PATH = "ROOT_PATH";
     public static String PROXY_HOST = "PROXY_HOST";
     public static String PROXY_PORT = "PROXY_PORT";
-    public static String PROXY_USE = "PROXY_USE";   
+    public static String PROXY_USE = "PROXY_USE";
     public static String SERVICE_FILE = "SERVICE_FILE";
     public static String EMPLOYEE_FILE = "EMPLOYEE_FILE";
-    
+
     private Map environments = new HashMap();
-    
+
     private static AppEnv CONTEXT;
-    
+
     private DocumentMarshalerAggregator marshalFactory = new DocumentMarshalerAggregator();
-    
-    private ClassifierRepository classifierRepository =  new ClassifierRepositoryImpl();
-    
+
+    private ClassifierRepository classifierRepository = new ClassifierRepositoryImpl();
+
     private ServiceManager serviceManager;
     private EmployeeManager employeeManager;
     private MenuManager menuManager;
-    
+
     private StateHolder stateHolder;
-    
-    private AppEnv(){
-        
+
+    private AppEnv() {
+
     }
-    
-    private void initMarschaller(){
+
+    private void initMarschaller() {
         DocumentMarshaller mrsh = new CustomDocumentMarshallerImpl(InfoMessageList.class, ClsDocType.SERVICE_INFO);
         DocumentMarshaller mrsh2 = new JsonDocumentMarshallerImpl(Action.class, ClsDocType.ACTION);
         DocumentMarshaller mrsh3 = new CustomDocumentMarshallerImpl(InfoMessageList.class, ClsDocType.EMPLOYEE_LIST);
@@ -75,41 +74,27 @@ public class AppEnv {
         marshalFactory.setMarshallers(Arrays.asList(mrsh, mrsh2, mrsh3));//, mrsh3, mrsh4));
         marshalFactory.init();
     }
-    
-    private void initManagers(){
-        //String filePathService = (String)environments.get(SERVICE_FILE);
-        //String filePathEmployee = (String)environments.get(EMPLOYEE_FILE);
-        //String xml;
-        //try {
-            //xml = ResourceUtils.readFile(filePathService);
-            //InfoMessageList data = marshalFactory.<InfoMessageList>unmarshal(xml, ClsDocType.SERVICE_INFO);
-            serviceManager = new ServiceManager(classifierRepository, marshalFactory, stateHolder);
-            
-            menuManager = new MenuManager(marshalFactory, stateHolder);
-            
-            //xml = ResourceUtils.readFile(filePathEmployee);
-            //InfoMessageList dataInfoMessage = marshalFactory.<InfoMessageList>unmarshal(xml, ClsDocType.EMPLOYEE_LIST);
-            employeeManager = new EmployeeManager(classifierRepository, marshalFactory, stateHolder);          
-            
-        //} catch (IOException ex) {
-        //    Logger.getLogger(AppEnv.class.getName()).log(Level.SEVERE, null, ex);
-        //}
-        
+
+    private void initManagers() {
+        serviceManager = new ServiceManager(classifierRepository, marshalFactory, stateHolder);
+        menuManager = new MenuManager(classifierRepository, marshalFactory, stateHolder);
+        employeeManager = new EmployeeManager(classifierRepository, marshalFactory, stateHolder);
+
     }
-    
-    private Properties initProperties(String propFileName){
+
+    private Properties initProperties(String propFileName) {
         Properties properties = null;
         File fProp = null;
         String propDir = null;
-        if (propFileName == null){
+        if (propFileName == null) {
             propFileName = "conf.properties";
             propDir = "conf";
 
             fProp = new File(propDir + File.separator + propFileName);
-        }else{
+        } else {
             fProp = new File(propFileName);
         }
-        
+
         if (!fProp.exists()) {
             Logger.getLogger(AppEnv.class.getName()).log(Level.SEVERE, "not exists: " + fProp.getAbsolutePath());
             fProp = new File(".." + "/" + propDir + "/" + propFileName);
@@ -139,91 +124,85 @@ public class AppEnv {
         }
         return properties;
     }
-    
+
     public ClassifierRepository getClassifierRepository() {
         return classifierRepository;
     }
-    
-    public ServiceManager getServiceManager(){
+
+    public ServiceManager getServiceManager() {
         return serviceManager;
     }
-    
-    public EmployeeManager getEmployeeManager(){
+
+    public EmployeeManager getEmployeeManager() {
         return employeeManager;
     }
-    
-    public MenuManager getMenuManager(){
+
+    public MenuManager getMenuManager() {
         return menuManager;
     }
-    
-//    public FindSnilsManager getFindSnilsManager(){
-//        return findSnilsManager;
-//    }
-    
-    public DocumentMarshalerAggregator getMarschaller(){
+
+    public DocumentMarshalerAggregator getMarschaller() {
         return marshalFactory;
-    } 
-    
-    public StateHolder getStateHolder(){
+    }
+
+    public StateHolder getStateHolder() {
         return stateHolder;
     }
-    
-    public void init(String propFileName){
+
+    public void init(String propFileName) {
         initProperties(propFileName);
         initMarschaller();
         initManagers();
     }
-    
-    public void init(){
+
+    public void init() {
         initProperties(null);
-        
+
         String db = "db";
         String dbUrl = "jdbc:h2:" + getRootPath() + File.separator + db + File.separator + "BEA;AUTO_SERVER=TRUE"; //<property name=\"javax.persistence.jdbc.url\" value=\
         Map hm = new HashMap();
         hm.put("javax.persistence.jdbc.url", dbUrl);
-        
+
         QueriesEngine dao = QueriesEngine.instance("BEA", hm);
-        
-        ((ClassifierRepositoryImpl)getClassifierRepository()).setDAO(dao);
-        
+
+        ((ClassifierRepositoryImpl) getClassifierRepository()).setDAO(dao);
+
         stateHolder = new StateHolder();
-        
+
         initMarschaller();
-        initManagers();            
+        initManagers();
     }
-    
-    public static AppEnv getContext(String propFileName){ //https://habrahabr.ru/post/129494/
-        if (CONTEXT == null){
+
+    public static AppEnv getContext(String propFileName) { //https://habrahabr.ru/post/129494/
+        if (CONTEXT == null) {
             CONTEXT = new AppEnv();
             CONTEXT.init(propFileName);
         }
         return CONTEXT;
     }
-    
-    public static AppEnv getContext(){ //https://habrahabr.ru/post/129494/
-        if (CONTEXT == null){
+
+    public static AppEnv getContext() { //https://habrahabr.ru/post/129494/
+        if (CONTEXT == null) {
             CONTEXT = new AppEnv();
             CONTEXT.init();
         }
         return CONTEXT;
     }
-    
-    public String getRootPath(){
-        return (String)environments.get(ROOT_PATH);
+
+    public String getRootPath() {
+        return (String) environments.get(ROOT_PATH);
     }
-    
-    public HttpHost getProxyIfAbsetnt(){
-        if (environments.get(PROXY_HOST) != null && environments.get(PROXY_PORT) != null 
-                && environments.get(PROXY_USE) !=  null && "true".equalsIgnoreCase((String)environments.get(PROXY_USE))){
-            try{
-                HttpHost proxy = new HttpHost((String)environments.get(PROXY_HOST), Integer.valueOf((String)environments.get(PROXY_PORT)));
+
+    public HttpHost getProxyIfAbsetnt() {
+        if (environments.get(PROXY_HOST) != null && environments.get(PROXY_PORT) != null
+                && environments.get(PROXY_USE) != null && "true".equalsIgnoreCase((String) environments.get(PROXY_USE))) {
+            try {
+                HttpHost proxy = new HttpHost((String) environments.get(PROXY_HOST), Integer.valueOf((String) environments.get(PROXY_PORT)));
                 return proxy;
-            }catch (NumberFormatException ex) {
+            } catch (NumberFormatException ex) {
                 Logger.getLogger(AppEnv.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return null;
     }
 }
-
-

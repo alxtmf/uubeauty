@@ -30,7 +30,6 @@ import ru.p03.uubeauty.model.repository.ClassifierRepository;
 public class EmployeeManager {
 
     public static final String SELECT_EMPLOYEE = "SEMEE";
-    public static final String MESSAGE_CODE = "MESSAGE_CODE";
 
     //private final InfoMessageList data;
     private final DocumentMarshalerAggregator marshalFactory;
@@ -116,7 +115,8 @@ public class EmployeeManager {
                 boolean isServiceSelect = stateHolder.contains(update, ServiceManager.SELECT_SERVICE);
                 if (isSheduleSelect && isServiceSelect) {
                     markup = AppEnv.getContext().getMenuManager().keyboardAceptOrder();
-                    answerMessage.setText("<b>Осталось подтвердить запись</b>");
+                    answerMessage.setText(AppEnv.getContext().getMenuManager().getOrderDescription(update)
+                            + "\n<b>Осталось подтвердить запись</b>");
                 } else {
                     markup = AppEnv.getContext().getMenuManager().keyboard(false,
                             !isSheduleSelect, !isServiceSelect);
@@ -132,22 +132,4 @@ public class EmployeeManager {
         }
         return answerMessage;
     }
-
-//    private SendMessage infoMessage(Action action) {
-//        SendMessage answerMessage = null;
-//        String value = action.getValue(); //getParamList().getParam();
-//
-//        List<InfoMessage> im = data.getInfoMessage().stream().filter((t) -> {
-//            return t.getCode().equals(value);
-//        }).collect(Collectors.toList());
-//
-//        String text = "";
-//        for (InfoMessage infoMessage : im) {
-//            text += infoMessage.getMessage();
-//        }
-//        answerMessage = new SendMessage();
-//        answerMessage.setText(text);
-//
-//        return answerMessage;
-//    }
 }

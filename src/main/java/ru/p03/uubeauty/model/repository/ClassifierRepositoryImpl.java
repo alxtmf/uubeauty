@@ -49,6 +49,14 @@ public class ClassifierRepositoryImpl implements ClassifierRepository{
     public <T extends Classifier> List<T> find(Class<T> clazz, boolean isDeleted) {
         return getAll(clazz, isDeleted);
     }
+    
+     @Override
+    public <T extends Classifier> T find(Class<T> clazz, Long id) {
+        String text = " SELECT c FROM " + clazz.getSimpleName() 
+                + " c  WHERE c.isDeleted = 0 AND c.id = :id";
+        T obj = DAO.<T>single(DAO.<T>getListTextQuery(clazz, text, DAO.pair("id", id)));
+        return (T)obj;
+    }
 
     @Override
     public <T extends Classifier> List<T> getAll(Class<T> clazz) {

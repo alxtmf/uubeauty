@@ -7,6 +7,7 @@
 package ru.p03.uubeauty.model.repository;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -134,6 +135,10 @@ public class RegScheduleRepositoryImpl implements Serializable {
         } finally {
             em.close();
         }
+    }
+    
+    public void createOrder(Long employeeId, Long CustomerId, Long ServiceId, LocalDateTime dateTime){
+        
     }
 
 }

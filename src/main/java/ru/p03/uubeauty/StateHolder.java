@@ -35,7 +35,7 @@ public class StateHolder {
     }
     
     public List<State> get(User user){
-        return states.get(user.getId()) == null ? new ArrayList<>() : states.get(user);
+        return states.get(user.getId()) == null ? new ArrayList<>() : states.get(user.getId());
     }
     
     public List<State> remove (User user){
@@ -66,6 +66,19 @@ public class StateHolder {
     public List<State> get(Update update){
         User u = getUserFromUpdate(update);
         return get(u);
+    }
+    
+    public List<State> get(Update update, String actionName){
+        User u = getUserFromUpdate(update);
+        List<State> sts = get(u);
+        return sts.stream()
+                .filter((s) -> s.getAction().getName().equals(actionName))
+                .collect(Collectors.toList());
+    }
+    
+    public State getLast(Update update, String actionName){
+        List<State> list = get(update, actionName);
+        return list.get(list.size() - 1);
     }
     
     public List<State> remove (Update update){
