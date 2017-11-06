@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
+import org.telegram.telegrambots.api.objects.User;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import ru.p03.uubeauty.State;
@@ -19,9 +20,13 @@ import ru.p03.uubeauty.StateHolder;
 import ru.p03.uubeautyi.bot.document.spi.DocumentMarshalerAggregator;
 import ru.p03.uubeauty.model.ClsDocType;
 import ru.p03.uubeauty.bot.schema.Action;
+import ru.p03.uubeauty.model.ClsCustomer;
 import ru.p03.uubeauty.model.ClsEmployee;
 import ru.p03.uubeauty.model.ClsService;
 import ru.p03.uubeauty.model.repository.ClassifierRepository;
+import ru.p03.uubeauty.model.repository.ClsCustomerRepositoryImpl;
+import ru.p03.uubeauty.model.repository.exceptions.NonexistentEntityException;
+import ru.p03.uubeauty.util.ClsCustomerBuilder;
 
 /**
  *
@@ -43,23 +48,51 @@ public class MenuManager {
     private final DocumentMarshalerAggregator marshalFactory;
     private final StateHolder stateHolder;
     private final ClassifierRepository classifierRepository;
+    private final ClsCustomerRepositoryImpl clsCustomerRepository;
 
-    public MenuManager(ClassifierRepository classifierRepository,
+    public MenuManager(ClassifierRepository classifierRepository, ClsCustomerRepositoryImpl clsCustomerRepository,
             DocumentMarshalerAggregator marshalFactory, StateHolder stateHolder) {
         this.marshalFactory = marshalFactory;
         this.stateHolder = stateHolder;
         this.classifierRepository = classifierRepository;
+        this.clsCustomerRepository = clsCustomerRepository;
     }
 
     public SendMessage processCommand(Update update) {
         SendMessage answerMessage = null;
         String text = update.getMessage().getText();
         if ("/start".equalsIgnoreCase(text)) {
+
+            try {
+                register(update);
+            } catch (Exception ex) {
+                Logger.getLogger(MenuManager.class.getName()).log(Level.SEVERE, null, ex);
+                answerMessage = errorMessage();
+            }
+
             answerMessage = new SendMessage();
             InlineKeyboardMarkup markup = keyboard();
+
+            ClsCustomer customer = stateHolder.getCustomer(update);
+            answerMessage.setText("Здравствуйте, " + customer.getIm() + "!"
+                    + "\n<b>Нажмите на кнопку, чтобы начать запись</b>");
+
             answerMessage.setReplyMarkup(markup);
         }
         return answerMessage;
+    }
+
+    private void register(Update update) throws NonexistentEntityException, Exception {
+        User user = update.getCallbackQuery().getFrom();
+        ClsCustomer customer = stateHolder.getCustomer(user);
+        if (customer == null) {
+            customer = clsCustomerRepository.findFromTelegramId(user.getId());
+            if (customer == null) {
+                customer = new ClsCustomerBuilder().build(user);
+                clsCustomerRepository.edit(customer);
+            }
+            stateHolder.put(user, customer);
+        }
     }
 
     public SendMessage processCallbackQuery(Update update) {
@@ -77,9 +110,26 @@ public class MenuManager {
             }
 
             if (MenuManager.OPEN_MAIN.equals(action.getName()) || MenuManager.APROVE_ORDER.equals(action.getName())) {
+
                 answerMessage = new SendMessage();
                 InlineKeyboardMarkup markup = keyboard();
-                answerMessage.setText("<b>Нажмите на кнопку, чтобы начать запись</b>");
+
+                if (stateHolder.isActual(update)) {
+                    answerMessage.setText("<b>Нажмите на кнопку, чтобы начать запись</b>");
+                } else {
+
+                    try {
+                        register(update);
+                    } catch (Exception ex) {
+                        Logger.getLogger(MenuManager.class.getName()).log(Level.SEVERE, null, ex);
+                        answerMessage = errorMessage();
+                    }
+
+                    ClsCustomer customer = stateHolder.getCustomer(update);
+                    answerMessage.setText("Здравствуйте, " + customer.getIm() + "!"
+                            + "\n<b>Нажмите на кнопку, чтобы начать запись</b>");
+                }
+
                 answerMessage.setReplyMarkup(markup);
                 stateHolder.remove(update);
             }
@@ -91,6 +141,9 @@ public class MenuManager {
                 State servState = stateHolder.getLast(update, ServiceManager.SELECT_SERVICE);
                 State dateState = stateHolder.getLast(update, ScheduleInfoManager.SELECT_DATE_ACTION);
                 State hourState = stateHolder.getLast(update, ScheduleInfoManager.SELECT_HOUR_ACTION);
+                
+                ClsEmployee employee = classifierRepository.find(ClsEmployee.class, Long.decode(emplState.getAction().getValue()));
+                ClsService service = classifierRepository.find(ClsService.class, Long.decode(servState.getAction().getValue()));
 
                 answerMessage.setText("Спасибо, вы записаны");
                 stateHolder.remove(update);
@@ -107,13 +160,13 @@ public class MenuManager {
         State servState = stateHolder.getLast(update, ServiceManager.SELECT_SERVICE);
         State dateState = stateHolder.getLast(update, ScheduleInfoManager.SELECT_DATE_ACTION);
         State hourState = stateHolder.getLast(update, ScheduleInfoManager.SELECT_HOUR_ACTION);
-        
-        ClsEmployee employee = classifierRepository.find(ClsEmployee.class, (Long)emplState.getValue());
-        ClsService service = classifierRepository.find(ClsService.class, (Long)servState.getValue());
-        
-        String text = "Вы записаны на " + dateState.getValue() + " " + hourState.getValue()
+
+        ClsEmployee employee = classifierRepository.find(ClsEmployee.class, Long.decode(emplState.getAction().getValue()));
+        ClsService service = classifierRepository.find(ClsService.class, Long.decode(servState.getAction().getValue()));
+
+        String text = "Вы записаны на " + dateState.getAction().getValue() + " " + hourState.getAction().getValue()
                 + " к " + employee.getFamiliaIO() + " на " + service.getName();
-        
+
         return text;
     }
 

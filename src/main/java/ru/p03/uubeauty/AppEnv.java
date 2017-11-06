@@ -31,8 +31,10 @@ import ru.p03.uubeauty.bot.schema.Action;
 //import ru.p03.uubeauty.bot.schema.DataList;
 import ru.p03.uubeauty.bot.schema.InfoMessageList;
 import ru.p03.uubeauty.model.ClsDocType;
+import ru.p03.uubeauty.model.ClsUser;
 import ru.p03.uubeauty.model.repository.ClassifierRepository;
 import ru.p03.uubeauty.model.repository.ClassifierRepositoryImpl;
+import ru.p03.uubeauty.model.repository.ClsCustomerRepositoryImpl;
 import ru.p03.uubeautyi.bot.document.spi.JsonDocumentMarshallerImpl;
 
 /**
@@ -55,6 +57,7 @@ public class AppEnv {
     private DocumentMarshalerAggregator marshalFactory = new DocumentMarshalerAggregator();
 
     private ClassifierRepository classifierRepository = new ClassifierRepositoryImpl();
+    private ClsCustomerRepositoryImpl clsCustomerRepository =  new ClsCustomerRepositoryImpl();
 
     private ServiceManager serviceManager;
     private EmployeeManager employeeManager;
@@ -77,7 +80,7 @@ public class AppEnv {
 
     private void initManagers() {
         serviceManager = new ServiceManager(classifierRepository, marshalFactory, stateHolder);
-        menuManager = new MenuManager(classifierRepository, marshalFactory, stateHolder);
+        menuManager = new MenuManager(classifierRepository, getClsCustomerRepository(), marshalFactory, stateHolder);
         employeeManager = new EmployeeManager(classifierRepository, marshalFactory, stateHolder);
 
     }
@@ -166,6 +169,9 @@ public class AppEnv {
         QueriesEngine dao = QueriesEngine.instance("BEA", hm);
 
         ((ClassifierRepositoryImpl) getClassifierRepository()).setDAO(dao);
+        getClsCustomerRepository().setDAO(dao);
+        
+        getClassifierRepository().find(ClsUser.class);
 
         stateHolder = new StateHolder();
 
@@ -204,5 +210,9 @@ public class AppEnv {
             }
         }
         return null;
+    }
+
+    public ClsCustomerRepositoryImpl getClsCustomerRepository() {
+        return clsCustomerRepository;
     }
 }

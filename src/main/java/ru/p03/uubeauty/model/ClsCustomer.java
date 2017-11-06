@@ -41,6 +41,8 @@ public class ClsCustomer extends Classifier implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID")
     private Long id;
+    @Column(name = "ID_TELEGRAM")
+    private Long idTelegram;
     @Column(name = "IS_DELETED")
     private Integer isDeleted;
     @Size(max = 255)
@@ -134,6 +136,20 @@ public class ClsCustomer extends Classifier implements Serializable {
     @Override
     public String toString() {
         return "ru.p03.uubeauty.model.ClsCustomer[ id=" + id + " ]";
+    }
+
+    /**
+     * @return the idTelegram
+     */
+    public Long getIdTelegram() {
+        return idTelegram;
+    }
+
+    /**
+     * @param idTelegram the idTelegram to set
+     */
+    public void setIdTelegram(Long idTelegram) {
+        this.idTelegram = idTelegram;
     }
 
 }

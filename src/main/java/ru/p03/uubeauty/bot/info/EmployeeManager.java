@@ -113,6 +113,9 @@ public class EmployeeManager {
                 boolean isSheduleSelect = stateHolder.contains(update, ScheduleInfoManager.SELECT_DATE_ACTION,
                         ScheduleInfoManager.SELECT_HOUR_ACTION);
                 boolean isServiceSelect = stateHolder.contains(update, ServiceManager.SELECT_SERVICE);
+                
+                stateHolder.put(update, new State(action, null));
+                
                 if (isSheduleSelect && isServiceSelect) {
                     markup = AppEnv.getContext().getMenuManager().keyboardAceptOrder();
                     answerMessage.setText(AppEnv.getContext().getMenuManager().getOrderDescription(update)
@@ -120,7 +123,7 @@ public class EmployeeManager {
                 } else {
                     markup = AppEnv.getContext().getMenuManager().keyboard(false,
                             !isSheduleSelect, !isServiceSelect);
-                    stateHolder.put(update, new State(action, null));
+                    
                     answerMessage.setText("<b>Продолжаем:</b>");  
                 }
                 answerMessage.setReplyMarkup(markup);

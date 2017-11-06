@@ -17,6 +17,8 @@ import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import ru.p03.classifier.model.Classifier;
+import ru.p03.common.util.QueriesEngine;
 import ru.p03.uubeauty.model.ClsCustomer;
 import ru.p03.uubeauty.model.repository.exceptions.IllegalOrphanException;
 import ru.p03.uubeauty.model.repository.exceptions.NonexistentEntityException;
@@ -27,14 +29,21 @@ import ru.p03.uubeauty.model.repository.exceptions.NonexistentEntityException;
  */
 public class ClsCustomerRepositoryImpl implements Serializable {
 
-    public ClsCustomerRepositoryImpl(EntityManagerFactory emf) {
-        this.emf = emf;
+    /**
+     * @return the DAO
+     */
+    public QueriesEngine getDAO() {
+        return DAO;
     }
-    private EntityManagerFactory emf = null;
 
-    public EntityManager getEntityManager() {
-        return emf.createEntityManager();
+    /**
+     * @param DAO the DAO to set
+     */
+    public void setDAO(QueriesEngine DAO) {
+        this.DAO = DAO;
     }
+
+    private QueriesEngine DAO;
 
     public void create(ClsCustomer clsCustomer) {
         if (clsCustomer.getRegCustomerContactCollection() == null) {
@@ -42,7 +51,7 @@ public class ClsCustomerRepositoryImpl implements Serializable {
         }
         EntityManager em = null;
         try {
-            em = getEntityManager();
+            em = getDAO().getEntityManager();
             em.getTransaction().begin();
             Collection<RegCustomerContact> attachedRegCustomerContactCollection = new ArrayList<RegCustomerContact>();
             for (RegCustomerContact regCustomerContactCollectionRegCustomerContactToAttach : clsCustomer.getRegCustomerContactCollection()) {
@@ -69,9 +78,13 @@ public class ClsCustomerRepositoryImpl implements Serializable {
     }
 
     public void edit(ClsCustomer clsCustomer) throws IllegalOrphanException, NonexistentEntityException, Exception {
+        if (clsCustomer.getId() == null){
+            create(clsCustomer);
+            return;
+        }
         EntityManager em = null;
         try {
-            em = getEntityManager();
+            em = getDAO().getEntityManager();
             em.getTransaction().begin();
             ClsCustomer persistentClsCustomer = em.find(ClsCustomer.class, clsCustomer.getId());
             Collection<RegCustomerContact> regCustomerContactCollectionOld = persistentClsCustomer.getRegCustomerContactCollection();
@@ -112,7 +125,7 @@ public class ClsCustomerRepositoryImpl implements Serializable {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
                 Long id = clsCustomer.getId();
-                if (findClsCustomer(id) == null) {
+                if (find(id) == null) {
                     throw new NonexistentEntityException("The clsCustomer with id " + id + " no longer exists.");
                 }
             }
@@ -127,7 +140,7 @@ public class ClsCustomerRepositoryImpl implements Serializable {
     public void destroy(Long id) throws IllegalOrphanException, NonexistentEntityException {
         EntityManager em = null;
         try {
-            em = getEntityManager();
+            em = getDAO().getEntityManager();
             em.getTransaction().begin();
             ClsCustomer clsCustomer;
             try {
@@ -165,7 +178,7 @@ public class ClsCustomerRepositoryImpl implements Serializable {
     }
 
     private List<ClsCustomer> findClsCustomerEntities(boolean all, int maxResults, int firstResult) {
-        EntityManager em = getEntityManager();
+        EntityManager em = getDAO().getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(ClsCustomer.class));
@@ -180,17 +193,24 @@ public class ClsCustomerRepositoryImpl implements Serializable {
         }
     }
 
-    public ClsCustomer findClsCustomer(Long id) {
-        EntityManager em = getEntityManager();
+    public ClsCustomer find(Long id) {
+        EntityManager em = getDAO().getEntityManager();
         try {
             return em.find(ClsCustomer.class, id);
         } finally {
             em.close();
         }
     }
+    
+    public <T extends Classifier> T findFromTelegramId(Integer idTelegram) {
+        String text = " SELECT c FROM ClsCustomer " 
+                + " c  WHERE c.isDeleted = 0 AND c.idTelegram = :idTelegram";
+        T obj = DAO.<T>single(DAO.<T>getListTextQuery(ClsCustomer.class, text, DAO.pair("idTelegram", idTelegram)));
+        return (T)obj;
+    }
 
     public int getClsCustomerCount() {
-        EntityManager em = getEntityManager();
+        EntityManager em = getDAO().getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             Root<ClsCustomer> rt = cq.from(ClsCustomer.class);

@@ -184,14 +184,16 @@ public class ScheduleInfoManager {
                 InlineKeyboardMarkup markup = null;
                 boolean isEmployeeSelect = stateHolder.contains(update, EmployeeManager.SELECT_EMPLOYEE);
                 boolean isServiceSelect = stateHolder.contains(update, ServiceManager.SELECT_SERVICE);
+                
+                stateHolder.put(update, new State(action, null));
+                
                 if (isEmployeeSelect && isServiceSelect) {
                     markup = AppEnv.getContext().getMenuManager().keyboardAceptOrder();
                     answerMessage.setText(AppEnv.getContext().getMenuManager().getOrderDescription(update)
                             + "\n<b>Осталось подтвердить запись</b>");
                 } else {
                     markup = AppEnv.getContext().getMenuManager().keyboard(
-                            !isEmployeeSelect, false, !isServiceSelect);
-                    stateHolder.put(update, new State(action, null));
+                            !isEmployeeSelect, false, !isServiceSelect);                   
                     answerMessage.setText("<b>Продолжаем:</b>");
 
                 }

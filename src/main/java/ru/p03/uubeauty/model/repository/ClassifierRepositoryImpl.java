@@ -50,7 +50,7 @@ public class ClassifierRepositoryImpl implements ClassifierRepository{
         return getAll(clazz, isDeleted);
     }
     
-     @Override
+    @Override
     public <T extends Classifier> T find(Class<T> clazz, Long id) {
         String text = " SELECT c FROM " + clazz.getSimpleName() 
                 + " c  WHERE c.isDeleted = 0 AND c.id = :id";
