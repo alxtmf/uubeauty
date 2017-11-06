@@ -205,7 +205,8 @@ public class ClsCustomerRepositoryImpl implements Serializable {
     public <T extends Classifier> T findFromTelegramId(Integer idTelegram) {
         String text = " SELECT c FROM ClsCustomer " 
                 + " c  WHERE c.isDeleted = 0 AND c.idTelegram = :idTelegram";
-        T obj = DAO.<T>single(DAO.<T>getListTextQuery(ClsCustomer.class, text, DAO.pair("idTelegram", idTelegram)));
+        T obj = DAO.<T>single(DAO.<T>getListTextQuery(ClsCustomer.class, text, 
+                DAO.pair("idTelegram", idTelegram)));
         return (T)obj;
     }
 

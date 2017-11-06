@@ -16,6 +16,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import ru.p03.common.util.QueriesEngine;
+import ru.p03.uubeauty.model.ClsCustomer;
 import ru.p03.uubeauty.model.RegSchedule;
 import ru.p03.uubeauty.model.repository.exceptions.NonexistentEntityException;
 
@@ -127,6 +128,14 @@ public class RegScheduleRepositoryImpl implements Serializable {
         } finally {
             em.close();
         }
+    }
+    
+    public List<RegSchedule> findFromCustomer(ClsCustomer customer) {
+        String text = " SELECT c FROM RegSchedule " 
+                + " c  WHERE c.isDeleted = 0 AND c.idCustomer = :idCustomer";
+        List<RegSchedule> list = DAO.getListTextQuery(ClsCustomer.class, text, 
+                DAO.pair("idCustomer", customer.getId()));
+        return list;
     }
 
     public RegSchedule findRegSchedule(Long id) {

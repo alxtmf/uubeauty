@@ -46,6 +46,7 @@ public class MenuManager {
 
     public static final String OPEN_EMPLOYEE_LIST = "OPEN_EMPLOYEE_LIST";
     public static final String OPEN_SERVICE_LIST = "OPEN_SERVICE_LIST";
+    public static final String OPEN_MY_ORDER_LIST = "MORL";
 
     public static final String ACEPT_ORDER = "ACPO";
     public static final String APROVE_ORDER = "APRO";
@@ -164,11 +165,33 @@ public class MenuManager {
                         .setDate(ld)
                         .setHour(ld, hour)
                         .setIsDeleted(0)
-                        .build();                
+                        .build();
                 regScheduleRepository.edit(rs);
 
                 answerMessage.setText("Спасибо, вы записаны");
                 stateHolder.remove(update);
+            }
+
+            if (MenuManager.OPEN_MY_ORDER_LIST.equals(action.getName())) {
+                answerMessage = new SendMessage();
+                ClsCustomer customer = stateHolder.getCustomer(update);
+                List<RegSchedule> list = regScheduleRepository.findFromCustomer(customer);
+
+                String text = "";
+                for (RegSchedule rs : list) {
+                    ClsEmployee employee = classifierRepository.find(ClsEmployee.class, rs.getIdEmployee());
+                    ClsService service = classifierRepository.find(ClsService.class, rs.getIdService());
+                    String s = "Вы записаны на " + rs.getDateTimeServiceBegin()
+                            + " к " + employee.getFamiliaIO() + " на " + service.getName() + "\n";
+                    text += s;
+                }
+
+                if (text.isEmpty()) {
+                    text = "У вас нет заказов";
+                }
+
+                answerMessage.setText(text);
+
             }
         } catch (Exception ex) {
             Logger.getLogger(ScheduleInfoManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -224,8 +247,19 @@ public class MenuManager {
         if (showServiceList) {
             keyboard.add(Arrays.asList(serviceListButton()));
         }
+        keyboard.add(Arrays.asList(myOrderListButton()));
         markup.setKeyboard(keyboard);
         return markup;
+    }
+
+    private InlineKeyboardButton myOrderListButton() {
+        InlineKeyboardButton button = new InlineKeyboardButton();
+        button.setText("Мои заказы");
+        Action action = new Action();
+        action.setName(OPEN_MY_ORDER_LIST);
+        String clbData = marshalFactory.<Action>marshal(action, ClsDocType.ACTION);
+        button.setCallbackData(clbData);
+        return button;
     }
 
     private InlineKeyboardButton employeeListButton() {

@@ -49,7 +49,7 @@ public class OrderBuilder {
     
     public OrderBuilder setHour(LocalDate date, Integer hour){    
         LocalDateTime ldt = LocalDateTime.of(date.getYear(), date.getMonth(), date.getDayOfMonth(), hour, 0);
-        reg.setDateTimeServiceBegin(Date.from(ldt.toInstant(ZoneOffset.UTC)));
+        reg.setDateTimeServiceBegin(Date.from(ldt.toInstant(ZoneOffset.ofHours(0))));
         return this;
     }
     
