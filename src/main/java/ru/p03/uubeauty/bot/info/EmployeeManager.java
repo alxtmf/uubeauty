@@ -124,7 +124,12 @@ public class EmployeeManager {
                     markup = AppEnv.getContext().getMenuManager().keyboard(false,
                             !isSheduleSelect, !isServiceSelect);
                     
-                    answerMessage.setText("<b>Продолжаем:</b>");  
+                    ClsEmployee employee = classifierRepository.find(ClsEmployee.class, Long.decode(action.getValue()));
+                    
+                    answerMessage.setText("Вы выбрали " + employee.getFamiliaIO()
+                            + "\n<b>Продолжаем:</b>"); 
+                    
+                    //answerMessage.setText("<b>Продолжаем:</b>");  
                 }
                 answerMessage.setReplyMarkup(markup);
             }

@@ -124,6 +124,10 @@ public class ServiceManager {
                     markup = AppEnv.getContext().getMenuManager().keyboard(
                             !isEmployeeSelect, !isSheduleSelect, false);
                     
+                    ClsService service = classifierRepository.find(ClsService.class, Long.decode(action.getValue()));
+                    
+                    answerMessage.setText("Вы выбрали " + service.getName() 
+                            + "\n<b>Продолжаем:</b>"); 
                 }
                 answerMessage.setReplyMarkup(markup);
             }

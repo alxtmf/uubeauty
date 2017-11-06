@@ -173,7 +173,8 @@ public class ScheduleInfoManager {
 
             if (SELECT_DATE_ACTION.equals(action.getName())) {
                 answerMessage = new SendMessage();
-                answerMessage.setText("<b>Выберите час записи</b>");
+                answerMessage.setText("Вы выбрали " + action.getValue()
+                        +"\n<b>Выберите час записи</b>");
                 InlineKeyboardMarkup markup = keyboardInDay(from, action);
                 answerMessage.setReplyMarkup(markup);
                 stateHolder.put(update, new State(action, null));
@@ -194,7 +195,8 @@ public class ScheduleInfoManager {
                 } else {
                     markup = AppEnv.getContext().getMenuManager().keyboard(
                             !isEmployeeSelect, false, !isServiceSelect);                   
-                    answerMessage.setText("<b>Продолжаем:</b>");
+                    answerMessage.setText("Вы выбрали " + action.getValue()
+                            + "\n<b>Продолжаем:</b>");
 
                 }
                 answerMessage.setReplyMarkup(markup);
