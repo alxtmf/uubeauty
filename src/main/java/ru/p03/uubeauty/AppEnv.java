@@ -35,6 +35,7 @@ import ru.p03.uubeauty.model.ClsUser;
 import ru.p03.uubeauty.model.repository.ClassifierRepository;
 import ru.p03.uubeauty.model.repository.ClassifierRepositoryImpl;
 import ru.p03.uubeauty.model.repository.ClsCustomerRepositoryImpl;
+import ru.p03.uubeauty.model.repository.RegScheduleRepositoryImpl;
 import ru.p03.uubeautyi.bot.document.spi.JsonDocumentMarshallerImpl;
 
 /**
@@ -58,6 +59,7 @@ public class AppEnv {
 
     private ClassifierRepository classifierRepository = new ClassifierRepositoryImpl();
     private ClsCustomerRepositoryImpl clsCustomerRepository =  new ClsCustomerRepositoryImpl();
+    private RegScheduleRepositoryImpl regScheduleRepositoryImpl =  new RegScheduleRepositoryImpl();
 
     private ServiceManager serviceManager;
     private EmployeeManager employeeManager;
@@ -80,7 +82,8 @@ public class AppEnv {
 
     private void initManagers() {
         serviceManager = new ServiceManager(classifierRepository, marshalFactory, stateHolder);
-        menuManager = new MenuManager(classifierRepository, getClsCustomerRepository(), marshalFactory, stateHolder);
+        menuManager = new MenuManager(classifierRepository, getClsCustomerRepository(), 
+                getRegScheduleRepository(),marshalFactory, stateHolder);
         employeeManager = new EmployeeManager(classifierRepository, marshalFactory, stateHolder);
 
     }
@@ -170,6 +173,7 @@ public class AppEnv {
 
         ((ClassifierRepositoryImpl) getClassifierRepository()).setDAO(dao);
         getClsCustomerRepository().setDAO(dao);
+        getRegScheduleRepository().setDAO(dao);
         
         getClassifierRepository().find(ClsUser.class);
 
@@ -214,5 +218,12 @@ public class AppEnv {
 
     public ClsCustomerRepositoryImpl getClsCustomerRepository() {
         return clsCustomerRepository;
+    }
+
+    /**
+     * @return the regScheduleRepositoryImpl
+     */
+    public RegScheduleRepositoryImpl getRegScheduleRepository() {
+        return regScheduleRepositoryImpl;
     }
 }

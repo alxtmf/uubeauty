@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.User;
 import ru.p03.uubeauty.model.ClsCustomer;
+import ru.p03.uubeauty.util.UpdateUtil;
 
 /**
  *
@@ -170,7 +171,6 @@ public class StateHolder {
     }
 
     private User getUserFromUpdate(Update update) {
-        return update.getMessage() != null ? update.getMessage().getFrom()
-                : update.getCallbackQuery().getFrom();
+        return UpdateUtil.getUserFromUpdate(update);
     }
 }

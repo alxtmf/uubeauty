@@ -5,6 +5,8 @@
  */
 package ru.p03.uubeauty.util;
 
+import org.telegram.telegrambots.api.objects.Chat;
+import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.User;
 import ru.p03.uubeauty.model.ClsCustomer;
 
@@ -25,10 +27,27 @@ public class ClsCustomerBuilder {
                 .setIm(user.getFirstName());
         return clsCustomer;
     }
+    
+    public ClsCustomer build(Update update){
+        User user = UpdateUtil.getUserFromUpdate(update);
+        Chat chat = UpdateUtil.getChatFromUpdate(update);
+        setIdTelegram(Long.decode(user.getId().toString()))
+                .setIdChat(chat.getId())
+                .setFam(user.getLastName())
+                .setIm(user.getFirstName())
+                .setIsDeleted(0);
+        return clsCustomer;
+    }
 
+    
     
     public ClsCustomerBuilder setId(Long id) {
         clsCustomer.setId(id);
+        return this;
+    }
+    
+    public ClsCustomerBuilder setIdChat(Long id) {
+        clsCustomer.setIdChat(id);
         return this;
     }
 

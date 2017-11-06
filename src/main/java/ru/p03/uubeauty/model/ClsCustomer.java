@@ -43,6 +43,8 @@ public class ClsCustomer extends Classifier implements Serializable {
     private Long id;
     @Column(name = "ID_TELEGRAM")
     private Long idTelegram;
+    @Column(name = "ID_CHAT")
+    private Long idChat;
     @Column(name = "IS_DELETED")
     private Integer isDeleted;
     @Size(max = 255)
@@ -150,6 +152,20 @@ public class ClsCustomer extends Classifier implements Serializable {
      */
     public void setIdTelegram(Long idTelegram) {
         this.idTelegram = idTelegram;
+    }
+
+    /**
+     * @return the idChat
+     */
+    public Long getIdChat() {
+        return idChat;
+    }
+
+    /**
+     * @param idChat the idChat to set
+     */
+    public void setIdChat(Long idChat) {
+        this.idChat = idChat;
     }
 
 }

@@ -40,11 +40,11 @@ public class RegSchedule implements Serializable {
     @Column(name = "ID")
     private Long id;
     @Column(name = "ID_CUSTOMER")
-    private BigInteger idCustomer;
+    private Long idCustomer;
     @Column(name = "ID_EMPLOYEE")
-    private BigInteger idEmployee;
+    private Long idEmployee;
     @Column(name = "ID_SERVICE")
-    private BigInteger idService;
+    private Long idService;
     @Column(name = "IS_DELETED")
     private Integer isDeleted;
     @Column(name = "DATE_REG")
@@ -72,27 +72,27 @@ public class RegSchedule implements Serializable {
         this.id = id;
     }
 
-    public BigInteger getIdCustomer() {
+    public Long getIdCustomer() {
         return idCustomer;
     }
 
-    public void setIdCustomer(BigInteger idCustomer) {
+    public void setIdCustomer(Long idCustomer) {
         this.idCustomer = idCustomer;
     }
 
-    public BigInteger getIdEmployee() {
+    public Long getIdEmployee() {
         return idEmployee;
     }
 
-    public void setIdEmployee(BigInteger idEmployee) {
+    public void setIdEmployee(Long idEmployee) {
         this.idEmployee = idEmployee;
     }
 
-    public BigInteger getIdService() {
+    public Long getIdService() {
         return idService;
     }
 
-    public void setIdService(BigInteger idService) {
+    public void setIdService(Long idService) {
         this.idService = idService;
     }
 

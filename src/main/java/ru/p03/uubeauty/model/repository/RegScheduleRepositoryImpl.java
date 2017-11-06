@@ -15,6 +15,7 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import ru.p03.common.util.QueriesEngine;
 import ru.p03.uubeauty.model.RegSchedule;
 import ru.p03.uubeauty.model.repository.exceptions.NonexistentEntityException;
 
@@ -24,19 +25,26 @@ import ru.p03.uubeauty.model.repository.exceptions.NonexistentEntityException;
  */
 public class RegScheduleRepositoryImpl implements Serializable {
 
-    public RegScheduleRepositoryImpl(EntityManagerFactory emf) {
-        this.emf = emf;
+    /**
+     * @return the DAO
+     */
+    public QueriesEngine getDAO() {
+        return DAO;
     }
-    private EntityManagerFactory emf = null;
 
-    public EntityManager getEntityManager() {
-        return emf.createEntityManager();
+    /**
+     * @param DAO the DAO to set
+     */
+    public void setDAO(QueriesEngine DAO) {
+        this.DAO = DAO;
     }
+
+    private QueriesEngine DAO;
 
     public void create(RegSchedule regSchedule) {
         EntityManager em = null;
         try {
-            em = getEntityManager();
+            em = getDAO().getEntityManager();
             em.getTransaction().begin();
             em.persist(regSchedule);
             em.getTransaction().commit();
@@ -48,9 +56,15 @@ public class RegScheduleRepositoryImpl implements Serializable {
     }
 
     public void edit(RegSchedule regSchedule) throws NonexistentEntityException, Exception {
+        
+        if (regSchedule.getId() == null){
+            create(regSchedule);
+            return;
+        }
+        
         EntityManager em = null;
         try {
-            em = getEntityManager();
+            em = getDAO().getEntityManager();
             em.getTransaction().begin();
             regSchedule = em.merge(regSchedule);
             em.getTransaction().commit();
@@ -73,7 +87,7 @@ public class RegScheduleRepositoryImpl implements Serializable {
     public void destroy(Long id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
-            em = getEntityManager();
+            em = getDAO().getEntityManager();
             em.getTransaction().begin();
             RegSchedule regSchedule;
             try {
@@ -100,7 +114,7 @@ public class RegScheduleRepositoryImpl implements Serializable {
     }
 
     private List<RegSchedule> findRegScheduleEntities(boolean all, int maxResults, int firstResult) {
-        EntityManager em = getEntityManager();
+        EntityManager em = getDAO().getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(RegSchedule.class));
@@ -116,7 +130,7 @@ public class RegScheduleRepositoryImpl implements Serializable {
     }
 
     public RegSchedule findRegSchedule(Long id) {
-        EntityManager em = getEntityManager();
+        EntityManager em = getDAO().getEntityManager();
         try {
             return em.find(RegSchedule.class, id);
         } finally {
@@ -125,7 +139,7 @@ public class RegScheduleRepositoryImpl implements Serializable {
     }
 
     public int getRegScheduleCount() {
-        EntityManager em = getEntityManager();
+        EntityManager em = getDAO().getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             Root<RegSchedule> rt = cq.from(RegSchedule.class);

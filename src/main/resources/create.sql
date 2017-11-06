@@ -71,6 +71,8 @@ CREATE TABLE BEA.CLS_employee(
 
 CREATE TABLE BEA.CLS_CUSTOMER(
     ID              BIGINT IDENTITY,
+    ID_TELEGRAM     BIGINT,
+    ID_CHAT         BIGINT,
     IS_DELETED      INT DEFAULT 0,
     FAM             VARCHAR(255),
     IM              VARCHAR(255),

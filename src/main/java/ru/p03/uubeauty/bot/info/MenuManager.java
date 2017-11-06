@@ -5,6 +5,7 @@
  */
 package ru.p03.uubeauty.bot.info;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,10 +24,14 @@ import ru.p03.uubeauty.bot.schema.Action;
 import ru.p03.uubeauty.model.ClsCustomer;
 import ru.p03.uubeauty.model.ClsEmployee;
 import ru.p03.uubeauty.model.ClsService;
+import ru.p03.uubeauty.model.RegSchedule;
 import ru.p03.uubeauty.model.repository.ClassifierRepository;
 import ru.p03.uubeauty.model.repository.ClsCustomerRepositoryImpl;
+import ru.p03.uubeauty.model.repository.RegScheduleRepositoryImpl;
 import ru.p03.uubeauty.model.repository.exceptions.NonexistentEntityException;
 import ru.p03.uubeauty.util.ClsCustomerBuilder;
+import ru.p03.uubeauty.util.OrderBuilder;
+import ru.p03.uubeauty.util.UpdateUtil;
 
 /**
  *
@@ -49,13 +54,16 @@ public class MenuManager {
     private final StateHolder stateHolder;
     private final ClassifierRepository classifierRepository;
     private final ClsCustomerRepositoryImpl clsCustomerRepository;
+    private final RegScheduleRepositoryImpl regScheduleRepository;
 
     public MenuManager(ClassifierRepository classifierRepository, ClsCustomerRepositoryImpl clsCustomerRepository,
+            RegScheduleRepositoryImpl regScheduleRepository,
             DocumentMarshalerAggregator marshalFactory, StateHolder stateHolder) {
         this.marshalFactory = marshalFactory;
         this.stateHolder = stateHolder;
         this.classifierRepository = classifierRepository;
         this.clsCustomerRepository = clsCustomerRepository;
+        this.regScheduleRepository = regScheduleRepository;
     }
 
     public SendMessage processCommand(Update update) {
@@ -74,7 +82,8 @@ public class MenuManager {
             InlineKeyboardMarkup markup = keyboard();
 
             ClsCustomer customer = stateHolder.getCustomer(update);
-            answerMessage.setText("Здравствуйте, " + customer.getIm() + "!"
+            answerMessage.setText("Здравствуйте, "
+                    + (customer != null ? customer.getIm() : "") + "!"
                     + "\n<b>Нажмите на кнопку, чтобы начать запись</b>");
 
             answerMessage.setReplyMarkup(markup);
@@ -83,12 +92,12 @@ public class MenuManager {
     }
 
     private void register(Update update) throws NonexistentEntityException, Exception {
-        User user = update.getCallbackQuery().getFrom();
+        User user = UpdateUtil.getUserFromUpdate(update);
         ClsCustomer customer = stateHolder.getCustomer(user);
         if (customer == null) {
             customer = clsCustomerRepository.findFromTelegramId(user.getId());
             if (customer == null) {
-                customer = new ClsCustomerBuilder().build(user);
+                customer = new ClsCustomerBuilder().build(update);//319361219
                 clsCustomerRepository.edit(customer);
             }
             stateHolder.put(user, customer);
@@ -126,7 +135,8 @@ public class MenuManager {
                     }
 
                     ClsCustomer customer = stateHolder.getCustomer(update);
-                    answerMessage.setText("Здравствуйте, " + customer.getIm() + "!"
+                    answerMessage.setText("Здравствуйте, "
+                            + (customer != null ? customer.getIm() : "") + "!"
                             + "\n<b>Нажмите на кнопку, чтобы начать запись</b>");
                 }
 
@@ -141,9 +151,21 @@ public class MenuManager {
                 State servState = stateHolder.getLast(update, ServiceManager.SELECT_SERVICE);
                 State dateState = stateHolder.getLast(update, ScheduleInfoManager.SELECT_DATE_ACTION);
                 State hourState = stateHolder.getLast(update, ScheduleInfoManager.SELECT_HOUR_ACTION);
-                
+
+                LocalDate ld = LocalDate.parse(dateState.getAction().getValue());
+                Integer hour = Integer.decode(hourState.getAction().getValue());
                 ClsEmployee employee = classifierRepository.find(ClsEmployee.class, Long.decode(emplState.getAction().getValue()));
                 ClsService service = classifierRepository.find(ClsService.class, Long.decode(servState.getAction().getValue()));
+                ClsCustomer customer = stateHolder.getCustomer(update);
+
+                RegSchedule rs = new OrderBuilder().setEmployee(employee)
+                        .setCustomer(customer)
+                        .setService(service)
+                        .setDate(ld)
+                        .setHour(ld, hour)
+                        .setIsDeleted(0)
+                        .build();                
+                regScheduleRepository.edit(rs);
 
                 answerMessage.setText("Спасибо, вы записаны");
                 stateHolder.remove(update);
