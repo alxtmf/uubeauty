@@ -61,8 +61,10 @@ CREATE TABLE BEA.REG_USE_ROLE(
     NAME            VARCHAR(255)
 );
 --------------------------------------------------------------------------------
-CREATE TABLE BEA.CLS_employee(
+CREATE TABLE BEA.CLS_EMPLOYEE(
     ID              BIGINT IDENTITY,
+    ID_TELEGRAM     BIGINT,
+    ID_CHAT         BIGINT,
     IS_DELETED      INT DEFAULT 0,
     FAM             VARCHAR(255),
     IM              VARCHAR(255),

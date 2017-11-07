@@ -167,5 +167,13 @@ public class ClsCustomer extends Classifier implements Serializable {
     public void setIdChat(Long idChat) {
         this.idChat = idChat;
     }
+    
+    public String getFamiliaIO(){
+        String result = ""; 
+        result += getFam() + " " 
+               + (getIm() != null ? (getIm().substring(0, 1) + ".") : "")
+               + (getOtc() != null ? (getOtc().substring(0, 1) + ".") : ""); 
+        return result;
+    }
 
 }

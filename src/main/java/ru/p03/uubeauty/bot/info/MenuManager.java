@@ -9,6 +9,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
@@ -16,6 +19,8 @@ import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.User;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import ru.p03.uubeauty.Bot;
+import ru.p03.uubeauty.EmployeeSender;
 import ru.p03.uubeauty.State;
 import ru.p03.uubeauty.StateHolder;
 import ru.p03.uubeautyi.bot.document.spi.DocumentMarshalerAggregator;
@@ -56,6 +61,10 @@ public class MenuManager {
     private final ClassifierRepository classifierRepository;
     private final ClsCustomerRepositoryImpl clsCustomerRepository;
     private final RegScheduleRepositoryImpl regScheduleRepository;
+    
+    private Bot bot;
+    
+    private final ExecutorService sendEmployeeMessageExecutorService = Executors.newCachedThreadPool();;
 
     public MenuManager(ClassifierRepository classifierRepository, ClsCustomerRepositoryImpl clsCustomerRepository,
             RegScheduleRepositoryImpl regScheduleRepository,
@@ -65,6 +74,10 @@ public class MenuManager {
         this.classifierRepository = classifierRepository;
         this.clsCustomerRepository = clsCustomerRepository;
         this.regScheduleRepository = regScheduleRepository;
+    }
+    
+    public void setBot(Bot bot){
+        this.bot = bot;
     }
 
     public SendMessage processCommand(Update update) {
@@ -170,6 +183,11 @@ public class MenuManager {
 
                 answerMessage.setText("Спасибо, вы записаны");
                 stateHolder.remove(update);
+                
+                String text = "К вам записан " + dateState.getAction().getValue() + " " + hourState.getAction().getValue()
+                    + " к " + customer.getFamiliaIO() + " на " + service.getName();
+                EmployeeSender es = new EmployeeSender(bot, employee, text);
+                sendEmployeeMessageExecutorService.submit(es);
             }
 
             if (MenuManager.OPEN_MY_ORDER_LIST.equals(action.getName())) {

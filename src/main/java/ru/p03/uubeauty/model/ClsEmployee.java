@@ -37,6 +37,10 @@ public class ClsEmployee extends Classifier implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID")
     private Long id;
+    @Column(name = "ID_TELEGRAM")
+    private Long idTelegram;
+    @Column(name = "ID_CHAT")
+    private Long idChat;
     @Column(name = "IS_DELETED")
     private Integer isDeleted;
     @Size(max = 255)
@@ -127,6 +131,34 @@ public class ClsEmployee extends Classifier implements Serializable {
                + (getIm() != null ? (getIm().substring(0, 1) + ".") : "")
                + (getOtc() != null ? (getOtc().substring(0, 1) + ".") : ""); 
         return result;
+    }
+    
+    /**
+     * @return the idTelegram
+     */
+    public Long getIdTelegram() {
+        return idTelegram;
+    }
+
+    /**
+     * @param idTelegram the idTelegram to set
+     */
+    public void setIdTelegram(Long idTelegram) {
+        this.idTelegram = idTelegram;
+    }
+
+    /**
+     * @return the idChat
+     */
+    public Long getIdChat() {
+        return idChat;
+    }
+
+    /**
+     * @param idChat the idChat to set
+     */
+    public void setIdChat(Long idChat) {
+        this.idChat = idChat;
     }
 
 }
