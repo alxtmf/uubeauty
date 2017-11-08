@@ -47,9 +47,31 @@ public class OrderBuilder {
         return this;
     }
     
-    public OrderBuilder setHour(LocalDate date, Integer hour){    
-        LocalDateTime ldt = LocalDateTime.of(date.getYear(), date.getMonth(), date.getDayOfMonth(), hour, 0);
-        reg.setDateTimeServiceBegin(Date.from(ldt.toInstant(ZoneOffset.ofHours(0))));
+    public OrderBuilder setDateTimeServiceBegin(LocalDate date, Integer hour, Integer minute){    
+        LocalDateTime ldt = LocalDateTime.of(date.getYear(), date.getMonth(), date.getDayOfMonth(), hour, minute);
+        reg.setHourBegin(hour);
+        reg.setMinuteBegin(minute);
+        reg.setDateTimeServiceBegin(Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant()));
+        return this;
+    }
+    
+    public OrderBuilder setHourBegin(Integer hourBegin){
+        reg.setHourBegin(hourBegin);
+        return this;
+    }
+    
+    public OrderBuilder setHourEnd(Integer hourEnd){
+        reg.setHourEnd(hourEnd);
+        return this;
+    }
+    
+    public OrderBuilder setMinuteBegin(Integer minuteBegin){
+        reg.setMinuteBegin(minuteBegin);
+        return this;
+    }
+    
+    public OrderBuilder setMinuteEnd(Integer minuteEnd){
+        reg.setMinuteEnd(minuteEnd);
         return this;
     }
     

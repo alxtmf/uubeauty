@@ -176,7 +176,7 @@ public class MenuManager {
                         .setCustomer(customer)
                         .setService(service)
                         .setDate(ld)
-                        .setHour(ld, hour)
+                        .setDateTimeServiceBegin(ld, hour, 0)
                         .setIsDeleted(0)
                         .build();
                 regScheduleRepository.edit(rs);
