@@ -55,7 +55,15 @@ public class RegSchedule implements Serializable {
     private Date dateTimeServiceBegin;
     @Column(name = "DATE_TIME_SERVICE_END")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date dateTimeServiceEnd;
+    private Date dateTimeServiceEnd;   
+    @Column(name = "HOUR_BEGIN")
+    private Integer hourBegin;
+    @Column(name = "MINUTE_BEGIN")
+    private Integer minuteBegin;
+    @Column(name = "HOUR_END")
+    private Integer hourEnd;
+    @Column(name = "MINUTE_END")
+    private Integer minuteEnd;
 
     public RegSchedule() {
     }
@@ -127,7 +135,63 @@ public class RegSchedule implements Serializable {
     public void setDateTimeServiceEnd(Date dateTimeServiceEnd) {
         this.dateTimeServiceEnd = dateTimeServiceEnd;
     }
+    
+    /**
+     * @return the hourBegin
+     */
+    public Integer getHourBegin() {
+        return hourBegin;
+    }
 
+    /**
+     * @param hourBegin the hourBegin to set
+     */
+    public void setHourBegin(Integer hourBegin) {
+        this.hourBegin = hourBegin;
+    }
+
+    /**
+     * @return the minuteBegin
+     */
+    public Integer getMinuteBegin() {
+        return minuteBegin;
+    }
+
+    /**
+     * @param minuteBegin the minuteBegin to set
+     */
+    public void setMinuteBegin(Integer minuteBegin) {
+        this.minuteBegin = minuteBegin;
+    }
+
+    /**
+     * @return the hourEnd
+     */
+    public Integer getHourEnd() {
+        return hourEnd;
+    }
+
+    /**
+     * @param hourEnd the hourEnd to set
+     */
+    public void setHourEnd(Integer hourEnd) {
+        this.hourEnd = hourEnd;
+    }
+
+    /**
+     * @return the minuteEnd
+     */
+    public Integer getMinuteEnd() {
+        return minuteEnd;
+    }
+
+    /**
+     * @param minuteEnd the minuteEnd to set
+     */
+    public void setMinuteEnd(Integer minuteEnd) {
+        this.minuteEnd = minuteEnd;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
