@@ -55,6 +55,14 @@ public class OrderBuilder {
         return this;
     }
     
+    public OrderBuilder setDateTimeServiceEnd(LocalDate date, Integer hour, Integer minute){    
+        LocalDateTime ldt = LocalDateTime.of(date.getYear(), date.getMonth(), date.getDayOfMonth(), hour, minute);
+        reg.setHourEnd(hour);
+        reg.setMinuteEnd(minute);
+        reg.setDateTimeServiceEnd(Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant()));
+        return this;
+    }
+    
     public OrderBuilder setHourBegin(Integer hourBegin){
         reg.setHourBegin(hourBegin);
         return this;

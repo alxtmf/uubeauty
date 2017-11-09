@@ -25,6 +25,7 @@ import ru.p03.uubeauty.bot.schema.Action;
 import ru.p03.uubeauty.AppEnv;
 import ru.p03.uubeauty.State;
 import ru.p03.uubeauty.StateHolder;
+import ru.p03.uubeauty.model.repository.RegScheduleRepositoryImpl;
 
 /**
  *
@@ -53,11 +54,14 @@ public class ScheduleInfoManager {
     public static final String SELECT_HOUR_ACTION = "SELHR";
     private final DocumentMarshalerAggregator marshalFactory;
     private final StateHolder stateHolder;
+    
+    private final RegScheduleRepositoryImpl regScheduleRepository;
 
-    public ScheduleInfoManager(LocalDateTime now, DocumentMarshalerAggregator marshalFactory, StateHolder stateHolder) {
+    public ScheduleInfoManager(RegScheduleRepositoryImpl regScheduleRepository, LocalDateTime now, DocumentMarshalerAggregator marshalFactory, StateHolder stateHolder) {
         this.now = now;
         this.marshalFactory = marshalFactory;
         this.stateHolder = stateHolder;
+        this.regScheduleRepository = regScheduleRepository;
     }
 
     private InlineKeyboardButton dayToButton(User from, LocalDateTime ldt) {

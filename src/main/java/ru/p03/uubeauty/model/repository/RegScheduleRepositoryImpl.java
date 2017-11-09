@@ -7,8 +7,14 @@
 package ru.p03.uubeauty.model.repository;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import javafx.util.converter.LocalDateTimeStringConverter;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
@@ -17,6 +23,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import ru.p03.common.util.QueriesEngine;
 import ru.p03.uubeauty.model.ClsCustomer;
+import ru.p03.uubeauty.model.ClsEmployee;
 import ru.p03.uubeauty.model.RegSchedule;
 import ru.p03.uubeauty.model.repository.exceptions.NonexistentEntityException;
 
@@ -133,7 +140,7 @@ public class RegScheduleRepositoryImpl implements Serializable {
     public List<RegSchedule> findFromCustomer(ClsCustomer customer) {
         String text = " SELECT c FROM RegSchedule " 
                 + " c  WHERE c.isDeleted = 0 AND c.idCustomer = :idCustomer";
-        List<RegSchedule> list = DAO.getListTextQuery(ClsCustomer.class, text, 
+        List<RegSchedule> list = DAO.getListTextQuery(RegSchedule.class, text, 
                 DAO.pair("idCustomer", customer.getId()));
         return list;
     }
@@ -163,5 +170,30 @@ public class RegScheduleRepositoryImpl implements Serializable {
     public void createOrder(Long employeeId, Long CustomerId, Long ServiceId, LocalDateTime dateTime){
         
     }
-
+    
+    public List<LocalDateTime> getReserved (ClsEmployee employee, LocalDate ld){
+        String text = " SELECT c FROM RegSchedule " 
+                + " c  WHERE c.isDeleted = 0 AND c.idEmployee = :idEmployee"
+                + " AND YEAR(c.dateReg) = YEAR(:date)"
+                + " AND MONTH(c.dateReg) = MONTH(:date)"
+                + " AND DAY(c.dateReg) = DAY(:date)";
+        List<RegSchedule> busy = DAO.getListTextQuery(ClsCustomer.class, text, 
+                DAO.pair("idEmployee", employee.getId()),
+                DAO.pair("date", employee.getId()));
+        return busy.stream().map((RegSchedule t) -> {
+            LocalDateTime ldt = LocalDateTime.ofInstant(t.getDateTimeServiceBegin().toInstant(), ZoneId.systemDefault());
+            return ldt;
+        }).collect(Collectors.toList());
+    }
+    
+    public boolean isFree (ClsEmployee employee, LocalDateTime ldt){
+        String text = " SELECT c FROM RegSchedule " 
+                + " c  WHERE c.isDeleted = 0 AND c.idEmployee = :idEmployee"
+                + " AND c.dateTimeServiceBegin <= :date"
+                + " AND c.dateTimeServiceEnd >= :date";
+        List<RegSchedule> busy = DAO.getListTextQuery(ClsCustomer.class, text, 
+                DAO.pair("idEmployee", employee.getId()),
+                DAO.pair("date", Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant())));
+        return busy.isEmpty();
+    }
 }
