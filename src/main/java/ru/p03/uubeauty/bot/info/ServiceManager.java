@@ -121,7 +121,7 @@ public class ServiceManager {
                     answerMessage.setText(AppEnv.getContext().getMenuManager().getOrderDescription(update)
                             + "\n<b>Осталось подтвердить запись</b>");
                 } else {
-                    markup = AppEnv.getContext().getMenuManager().keyboard(
+                    markup = AppEnv.getContext().getMenuManager().keyboard(update,
                             !isEmployeeSelect, !isSheduleSelect, false);
                     
                     ClsService service = classifierRepository.find(ClsService.class, Long.decode(action.getValue()));

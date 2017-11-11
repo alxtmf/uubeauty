@@ -7,10 +7,12 @@
 package ru.p03.uubeauty.model.repository;
 
 import java.util.List;
+import static javafx.scene.input.KeyCode.T;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import ru.p03.classifier.model.Classifier;
 import ru.p03.common.util.QueriesEngine;
+import ru.p03.uubeauty.model.ClsEmployee;
 import ru.p03.uubeauty.model.repository.exceptions.NonexistentEntityException;
 
 /**
@@ -79,6 +81,14 @@ public class ClassifierRepositoryImpl implements ClassifierRepository{
                 + " c  WHERE c.isDeleted = 0 AND c.code = :code";
         T obj = DAO.<T>single(DAO.<T>getListTextQuery(clazz, text, DAO.pair("code", code)));
         return (Classifier)obj;
+    }
+    
+    public ClsEmployee findEmployee(Integer idTelegram) {
+        String text = " SELECT c FROM ClsEmployee" 
+                + " c  WHERE c.isDeleted = 0 AND c.idTelegram = :idTelegram";
+        ClsEmployee obj = DAO.<ClsEmployee>single(DAO.<ClsEmployee>getListTextQuery(ClsEmployee.class, text, 
+                DAO.pair("idTelegram", idTelegram)));
+        return obj;
     }
     
 //    public ClsDocType findDocumentType(String code) {

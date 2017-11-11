@@ -5,6 +5,7 @@
  */
 package ru.p03.uubeauty.bot.info;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ import ru.p03.uubeauty.AppEnv;
 import ru.p03.uubeauty.State;
 import ru.p03.uubeauty.StateHolder;
 import ru.p03.uubeauty.model.repository.RegScheduleRepositoryImpl;
+import ru.p03.uubeauty.util.UpdateUtil;
 
 /**
  *
@@ -54,7 +56,7 @@ public class ScheduleInfoManager {
     public static final String SELECT_HOUR_ACTION = "SELHR";
     private final DocumentMarshalerAggregator marshalFactory;
     private final StateHolder stateHolder;
-    
+
     private final RegScheduleRepositoryImpl regScheduleRepository;
 
     public ScheduleInfoManager(RegScheduleRepositoryImpl regScheduleRepository, LocalDateTime now, DocumentMarshalerAggregator marshalFactory, StateHolder stateHolder) {
@@ -104,20 +106,26 @@ public class ScheduleInfoManager {
         return buttons;
     }
 
-    private List<Long> getNextHours() {
+    private List<Long> getNextHours(Update update, Action action) {
         final List<Long> h = new ArrayList<>();
-        //LocalDateTime _now = LocalDateTime.of(now.toLocalDate(), now.toLocalTime());
-        LongStream.rangeClosed(minHour, maxHour).forEach((i) -> {
+        LocalDate ld = LocalDate.parse(action.getValue());
+
+        long minHourDate = minHour;
+        if (ld.compareTo(now.toLocalDate()) == 0) {
+            minHourDate = now.getHour() > minHourDate ? (now.getHour() + 1) : minHour;
+        }
+
+        LongStream.rangeClosed(minHourDate, maxHour).forEach((i) -> {
             h.add(i);
         });
         return h;
     }
 
-    public List<InlineKeyboardButton> buttonsInDay(User from, Action action) {
+    public List<InlineKeyboardButton> buttonsInDay(Update update, Action action) {
         final List<InlineKeyboardButton> buttons = new ArrayList<>();
 
-        getNextHours().stream().forEach((ldt) -> {
-            buttons.add(dayHoursToButton(from, ldt));
+        getNextHours(update, action).stream().forEach((ldt) -> {
+            buttons.add(dayHoursToButton(UpdateUtil.getUserFromUpdate(update), ldt));
         });
         return buttons;
     }
@@ -134,24 +142,33 @@ public class ScheduleInfoManager {
 
     }
 
-    public InlineKeyboardMarkup keyboardInDay(User from, Action action) {
+    public InlineKeyboardMarkup keyboardInDay(Update update, Action action) {
         final InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
         final List<InlineKeyboardButton> strBtn = new ArrayList<>();
         final int max = 3;
-        buttonsInDay(from, action).stream().forEach((t) -> {
-            strBtn.add(t);
+        for (InlineKeyboardButton ikb : buttonsInDay(update, action)) {
+            strBtn.add(ikb);
             if (strBtn.size() == max) {
                 keyboard.add(new ArrayList<>(strBtn));
                 strBtn.clear();
             }
-        });
+        }
+        if (!strBtn.isEmpty()) {
+            keyboard.add(new ArrayList<>(strBtn));
+            strBtn.clear();
+        }
+//        buttonsInDay(update, action).stream().forEach((t) -> {
+//            strBtn.add(t);
+//            if (strBtn.size() == max) {
+//                keyboard.add(new ArrayList<>(strBtn));
+//                strBtn.clear();
+//            }
+//        });
         keyboard.add(Arrays.asList(AppEnv.getContext().getMenuManager().buttonMain()));
         markup.setKeyboard(keyboard);
         return markup;
     }
-//
-//
 
     public SendMessage processCallbackQuery(Update update) {
         SendMessage answerMessage = null;
@@ -178,8 +195,8 @@ public class ScheduleInfoManager {
             if (SELECT_DATE_ACTION.equals(action.getName())) {
                 answerMessage = new SendMessage();
                 answerMessage.setText("Вы выбрали " + action.getValue()
-                        +"\n<b>Выберите час записи</b>");
-                InlineKeyboardMarkup markup = keyboardInDay(from, action);
+                        + "\n<b>Выберите час записи</b>");
+                InlineKeyboardMarkup markup = keyboardInDay(update, action);
                 answerMessage.setReplyMarkup(markup);
                 stateHolder.put(update, new State(action, null));
             }
@@ -189,16 +206,16 @@ public class ScheduleInfoManager {
                 InlineKeyboardMarkup markup = null;
                 boolean isEmployeeSelect = stateHolder.contains(update, EmployeeManager.SELECT_EMPLOYEE);
                 boolean isServiceSelect = stateHolder.contains(update, ServiceManager.SELECT_SERVICE);
-                
+
                 stateHolder.put(update, new State(action, null));
-                
+
                 if (isEmployeeSelect && isServiceSelect) {
                     markup = AppEnv.getContext().getMenuManager().keyboardAceptOrder();
                     answerMessage.setText(AppEnv.getContext().getMenuManager().getOrderDescription(update)
                             + "\n<b>Осталось подтвердить запись</b>");
                 } else {
-                    markup = AppEnv.getContext().getMenuManager().keyboard(
-                            !isEmployeeSelect, false, !isServiceSelect);                   
+                    markup = AppEnv.getContext().getMenuManager().keyboard(update,
+                            !isEmployeeSelect, false, !isServiceSelect);
                     answerMessage.setText("Вы выбрали " + action.getValue()
                             + "\n<b>Продолжаем:</b>");
 
@@ -212,39 +229,4 @@ public class ScheduleInfoManager {
         }
         return answerMessage;
     }
-//
-//    private SendMessage sheduleMessage(Action action) {
-//        SendMessage answerMessage = null;
-//        String depart = action.getId(); //getParamList().getParam();
-////        Optional<Param> fparam = param.stream().filter((t) -> {
-////            return FILIAL_CODE.equals(t.getName());
-////        }).findFirst();
-//
-////        if (fparam.isPresent()){
-////            Param p = fparam.get();
-////        List<ScheduleInfo> si = data.getScheduleInfoList().getScheduleInfo().stream().filter((t) -> {
-////            return t.getOrganisation().getCode().toString().equals(depart);
-////        }).collect(Collectors.toList());
-//
-//        //if (osi.isPresent()) {
-//        //ScheduleInfo si = osi.get();
-//        String text = "";
-////        for (ScheduleInfo scheduleInfo : si) {
-////            text += scheduleInfo.getOrganisation().getName()
-////                    + "\n<b>Адрес: </b>" + scheduleInfo.getAdress().getAddressNonStructured()
-////                    + "\n<b>Телефон: </b>" + scheduleInfo.getPhone()
-////                    + "\nВремя работы:\n";
-////            for (Schedule s : scheduleInfo.getScheduleList().getSchedule()) {
-////                String str = s.getDayOfWeek() + ": " + s.getBeginTime() + " - " + s.getEndTime()
-////                        + " обед: " + s.getBeginDinner() + " - " + s.getEndDinner() + "\n";
-////                text += str;
-////            }
-////        }
-//        answerMessage = new SendMessage();
-//        answerMessage.setText(text);
-//        //}
-//        //}
-//
-//        return answerMessage;
-//    }
 }

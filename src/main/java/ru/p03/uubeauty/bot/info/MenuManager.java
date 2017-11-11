@@ -8,6 +8,7 @@ package ru.p03.uubeauty.bot.info;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -28,11 +29,14 @@ import ru.p03.uubeauty.model.ClsDocType;
 import ru.p03.uubeauty.bot.schema.Action;
 import ru.p03.uubeauty.model.ClsCustomer;
 import ru.p03.uubeauty.model.ClsEmployee;
+import ru.p03.uubeauty.model.ClsRole;
 import ru.p03.uubeauty.model.ClsService;
 import ru.p03.uubeauty.model.RegSchedule;
 import ru.p03.uubeauty.model.repository.ClassifierRepository;
+import ru.p03.uubeauty.model.repository.ClassifierRepositoryImpl;
 import ru.p03.uubeauty.model.repository.ClsCustomerRepositoryImpl;
 import ru.p03.uubeauty.model.repository.RegScheduleRepositoryImpl;
+import ru.p03.uubeauty.model.repository.RegUseRoleRepository;
 import ru.p03.uubeauty.model.repository.exceptions.NonexistentEntityException;
 import ru.p03.uubeauty.util.ClsCustomerBuilder;
 import ru.p03.uubeauty.util.OrderBuilder;
@@ -52,31 +56,36 @@ public class MenuManager {
     public static final String OPEN_EMPLOYEE_LIST = "OPEN_EMPLOYEE_LIST";
     public static final String OPEN_SERVICE_LIST = "OPEN_SERVICE_LIST";
     public static final String OPEN_MY_ORDER_LIST = "MORL";
+    public static final String OPEN_MY_APPOINT_ORDER_LIST = "AORL";
 
     public static final String ACEPT_ORDER = "ACPO";
     public static final String APROVE_ORDER = "APRO";
 
     private final DocumentMarshalerAggregator marshalFactory;
     private final StateHolder stateHolder;
-    private final ClassifierRepository classifierRepository;
+    private final ClassifierRepositoryImpl classifierRepository;
     private final ClsCustomerRepositoryImpl clsCustomerRepository;
     private final RegScheduleRepositoryImpl regScheduleRepository;
-    
+    private final RegUseRoleRepository regUseRoleRepository;
+
     private Bot bot;
-    
-    private final ExecutorService sendEmployeeMessageExecutorService = Executors.newCachedThreadPool();;
+
+    private final ExecutorService sendEmployeeMessageExecutorService = Executors.newCachedThreadPool();
+
+    ;
 
     public MenuManager(ClassifierRepository classifierRepository, ClsCustomerRepositoryImpl clsCustomerRepository,
-            RegScheduleRepositoryImpl regScheduleRepository,
+            RegScheduleRepositoryImpl regScheduleRepository, RegUseRoleRepository regUseRoleRepository,
             DocumentMarshalerAggregator marshalFactory, StateHolder stateHolder) {
         this.marshalFactory = marshalFactory;
         this.stateHolder = stateHolder;
-        this.classifierRepository = classifierRepository;
+        this.classifierRepository = (ClassifierRepositoryImpl) classifierRepository;
         this.clsCustomerRepository = clsCustomerRepository;
         this.regScheduleRepository = regScheduleRepository;
+        this.regUseRoleRepository = regUseRoleRepository;
     }
-    
-    public void setBot(Bot bot){
+
+    public void setBot(Bot bot) {
         this.bot = bot;
     }
 
@@ -93,7 +102,7 @@ public class MenuManager {
             }
 
             answerMessage = new SendMessage();
-            InlineKeyboardMarkup markup = keyboard();
+            InlineKeyboardMarkup markup = keyboard(update);
 
             ClsCustomer customer = stateHolder.getCustomer(update);
             answerMessage.setText("Здравствуйте, "
@@ -135,7 +144,7 @@ public class MenuManager {
             if (MenuManager.OPEN_MAIN.equals(action.getName()) || MenuManager.APROVE_ORDER.equals(action.getName())) {
 
                 answerMessage = new SendMessage();
-                InlineKeyboardMarkup markup = keyboard();
+                InlineKeyboardMarkup markup = keyboard(update);
 
                 if (stateHolder.isActual(update)) {
                     answerMessage.setText("<b>Нажмите на кнопку, чтобы начать запись</b>");
@@ -184,9 +193,9 @@ public class MenuManager {
 
                 answerMessage.setText("Спасибо, вы записаны");
                 stateHolder.remove(update);
-                
+
                 String text = "К вам записан " + dateState.getAction().getValue() + " " + hourState.getAction().getValue()
-                    + " к " + customer.getFamiliaIO() + " на " + service.getName();
+                        + " к " + customer.getFamiliaIO() + " на " + service.getName();
                 EmployeeSender es = new EmployeeSender(bot, employee, text);
                 sendEmployeeMessageExecutorService.submit(es);
             }
@@ -211,6 +220,32 @@ public class MenuManager {
 
                 answerMessage.setText(text);
 
+            }
+
+            if (MenuManager.OPEN_MY_APPOINT_ORDER_LIST.equals(action.getName())) {
+                answerMessage = new SendMessage();
+                String text = "";
+                ClsEmployee finded = classifierRepository.findEmployee(UpdateUtil.getUserFromUpdate(update).getId());
+                if (finded != null) {
+                    List<RegSchedule> list = regScheduleRepository.findFromEmployee(finded, new Date());
+                    if (!list.isEmpty()) {
+                        text = "Ко мне записаны:\n";
+                        int i = 1;
+                        for (RegSchedule rs : list) {
+                            ClsCustomer customer = classifierRepository.find(ClsCustomer.class, rs.getIdCustomer());
+                            ClsService service = classifierRepository.find(ClsService.class, rs.getIdService());
+                            String s = i + ". на " + rs.getDateTimeServiceBegin()
+                                    + " к " + customer.getFamiliaIO() + " на " + service.getName() + "\n";
+                            text += s;
+                            i++;
+                        }
+                    }
+                }
+                if (text.isEmpty()) {
+                    text = "К вам никто не записан";
+
+                }
+                answerMessage.setText(text);
             }
         } catch (Exception ex) {
             Logger.getLogger(ScheduleInfoManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -250,11 +285,12 @@ public class MenuManager {
         return answerMessage;
     }
 
-    public InlineKeyboardMarkup keyboard() {
-        return keyboard(true, true, true);
+    public InlineKeyboardMarkup keyboard(Update update) {
+        return keyboard(update, true, true, true);
     }
 
-    public InlineKeyboardMarkup keyboard(boolean showEmployeeList, boolean showSheduleList, boolean showServiceList) {
+    public InlineKeyboardMarkup keyboard(Update update,
+            boolean showEmployeeList, boolean showSheduleList, boolean showServiceList) {
         final InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
         if (showEmployeeList) {
@@ -267,6 +303,10 @@ public class MenuManager {
             keyboard.add(Arrays.asList(serviceListButton()));
         }
         keyboard.add(Arrays.asList(myOrderListButton()));
+        ClsEmployee finded = classifierRepository.findEmployee(UpdateUtil.getUserFromUpdate(update).getId());
+        if (finded != null && regUseRoleRepository.hasRole(finded, ClsRole.EMPLOYEE)) {
+            keyboard.add(Arrays.asList(appointOrderListButton()));
+        }
         markup.setKeyboard(keyboard);
         return markup;
     }
@@ -276,6 +316,16 @@ public class MenuManager {
         button.setText("Мои заказы");
         Action action = new Action();
         action.setName(OPEN_MY_ORDER_LIST);
+        String clbData = marshalFactory.<Action>marshal(action, ClsDocType.ACTION);
+        button.setCallbackData(clbData);
+        return button;
+    }
+
+    private InlineKeyboardButton appointOrderListButton() {
+        InlineKeyboardButton button = new InlineKeyboardButton();
+        button.setText("Ко мне записаны");
+        Action action = new Action();
+        action.setName(OPEN_MY_APPOINT_ORDER_LIST);
         String clbData = marshalFactory.<Action>marshal(action, ClsDocType.ACTION);
         button.setCallbackData(clbData);
         return button;

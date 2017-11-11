@@ -12,11 +12,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
-import javafx.util.converter.LocalDateTimeStringConverter;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
@@ -142,6 +139,16 @@ public class RegScheduleRepositoryImpl implements Serializable {
                 + " c  WHERE c.isDeleted = 0 AND c.idCustomer = :idCustomer";
         List<RegSchedule> list = DAO.getListTextQuery(RegSchedule.class, text, 
                 DAO.pair("idCustomer", customer.getId()));
+        return list;
+    }
+    
+    public List<RegSchedule> findFromEmployee(ClsEmployee employee, Date date) {
+        String text = " SELECT c FROM RegSchedule " 
+                + " c  WHERE c.isDeleted = 0 AND c.idEmployee = :idEmployee"
+                + " AND c.dateTimeServiceBegin > :date";
+        List<RegSchedule> list = DAO.getListTextQuery(RegSchedule.class, text, 
+                DAO.pair("idEmployee", employee.getId()),
+                DAO.pair("date", date));
         return list;
     }
 

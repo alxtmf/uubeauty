@@ -19,6 +19,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import ru.p03.classifier.model.Classifier;
 
 /**
  *
@@ -110,7 +111,7 @@ public class RegUseRole implements Serializable {
         }
         return true;
     }
-
+    
     @Override
     public String toString() {
         return "ru.p03.uubeauty.model.RegUseRole[ id=" + id + " ]";
