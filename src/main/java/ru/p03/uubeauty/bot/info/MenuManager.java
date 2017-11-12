@@ -20,6 +20,7 @@ import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.User;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import ru.p03.common.util.FormatUtils;
 import ru.p03.uubeauty.Bot;
 import ru.p03.uubeauty.EmployeeSender;
 import ru.p03.uubeauty.State;
@@ -38,7 +39,9 @@ import ru.p03.uubeauty.model.repository.ClsCustomerRepositoryImpl;
 import ru.p03.uubeauty.model.repository.RegScheduleRepositoryImpl;
 import ru.p03.uubeauty.model.repository.RegUseRoleRepository;
 import ru.p03.uubeauty.model.repository.exceptions.NonexistentEntityException;
+import ru.p03.uubeauty.util.ActionBuilder;
 import ru.p03.uubeauty.util.ClsCustomerBuilder;
+import ru.p03.uubeauty.util.InlineKeyboardButtonBuilder;
 import ru.p03.uubeauty.util.OrderBuilder;
 import ru.p03.uubeauty.util.UpdateUtil;
 
@@ -57,6 +60,7 @@ public class MenuManager {
     public static final String OPEN_SERVICE_LIST = "OPEN_SERVICE_LIST";
     public static final String OPEN_MY_ORDER_LIST = "MORL";
     public static final String OPEN_MY_APPOINT_ORDER_LIST = "AORL";
+    public static final String OPEN_ALL_APPOINT_ORDER_LIST = "AARL";
 
     public static final String ACEPT_ORDER = "ACPO";
     public static final String APROVE_ORDER = "APRO";
@@ -130,12 +134,13 @@ public class MenuManager {
     public SendMessage processCallbackQuery(Update update) {
         SendMessage answerMessage = null;
         try {
-            String data = update.getCallbackQuery().getData();
-            if (data == null) {
-                return null;
-            }
-
-            Action action = marshalFactory.<Action>unmarshal(data, ClsDocType.ACTION);
+            Action action = new ActionBuilder(marshalFactory).buld(update);
+//            String data = update.getCallbackQuery().getData();
+//            if (data == null) {
+//                return null;
+//            }
+//
+//            Action action = marshalFactory.<Action>unmarshal(data, ClsDocType.ACTION);
 
             if (action == null) {
                 return null;
@@ -192,6 +197,7 @@ public class MenuManager {
                 regScheduleRepository.edit(rs);
 
                 answerMessage.setText("Спасибо, вы записаны");
+                answerMessage.setReplyMarkup(keyboardMain());
                 stateHolder.remove(update);
 
                 String text = "К вам записан " + dateState.getAction().getValue() + " " + hourState.getAction().getValue()
@@ -209,7 +215,7 @@ public class MenuManager {
                 for (RegSchedule rs : list) {
                     ClsEmployee employee = classifierRepository.find(ClsEmployee.class, rs.getIdEmployee());
                     ClsService service = classifierRepository.find(ClsService.class, rs.getIdService());
-                    String s = "Вы записаны на " + rs.getDateTimeServiceBegin()
+                    String s = "Вы записаны на " + FormatUtils.formatAsDDMMYYYHHmm(rs.getDateTimeServiceBegin())
                             + " к " + employee.getFamiliaIO() + " на " + service.getName() + "\n";
                     text += s;
                 }
@@ -234,7 +240,7 @@ public class MenuManager {
                         for (RegSchedule rs : list) {
                             ClsCustomer customer = classifierRepository.find(ClsCustomer.class, rs.getIdCustomer());
                             ClsService service = classifierRepository.find(ClsService.class, rs.getIdService());
-                            String s = i + ". на " + rs.getDateTimeServiceBegin()
+                            String s = i + ". на " + FormatUtils.formatAsDDMMYYYHHmm(rs.getDateTimeServiceBegin())
                                     + " к " + customer.getFamiliaIO() + " на " + service.getName() + "\n";
                             text += s;
                             i++;
@@ -243,6 +249,32 @@ public class MenuManager {
                 }
                 if (text.isEmpty()) {
                     text = "К вам никто не записан";
+
+                }
+                answerMessage.setText(text);
+            }
+
+            if (MenuManager.OPEN_ALL_APPOINT_ORDER_LIST.equals(action.getName())) {
+                answerMessage = new SendMessage();
+                String text = "";
+                List<ClsEmployee> finded = classifierRepository.find(ClsEmployee.class, false);
+                for (ClsEmployee employee : finded) {
+                    List<RegSchedule> list = regScheduleRepository.findFromEmployee(employee, new Date());
+                    if (!list.isEmpty()) {
+                        text = "К " + employee.getFamiliaIO() + " записаны:\n";
+                        int i = 1;
+                        for (RegSchedule rs : list) {
+                            ClsCustomer customer = classifierRepository.find(ClsCustomer.class, rs.getIdCustomer());
+                            ClsService service = classifierRepository.find(ClsService.class, rs.getIdService());
+                            String s = i + ". " + customer.getFamiliaIO() + " на " + FormatUtils.formatAsDDMMYYYHHmm(rs.getDateTimeServiceBegin())
+                                    + " на " + service.getName() + "\n";
+                            text += s;
+                            i++;
+                        }
+                    }
+                }
+                if (text.isEmpty()) {
+                    text = "Записей к мастерам нет";
 
                 }
                 answerMessage.setText(text);
@@ -302,11 +334,16 @@ public class MenuManager {
         if (showServiceList) {
             keyboard.add(Arrays.asList(serviceListButton()));
         }
+
         keyboard.add(Arrays.asList(myOrderListButton()));
         ClsEmployee finded = classifierRepository.findEmployee(UpdateUtil.getUserFromUpdate(update).getId());
         if (finded != null && regUseRoleRepository.hasRole(finded, ClsRole.EMPLOYEE)) {
             keyboard.add(Arrays.asList(appointOrderListButton()));
         }
+        if (finded != null && regUseRoleRepository.hasRole(finded, ClsRole.ADMIN)) {
+            keyboard.add(Arrays.asList(appointAllOrderListButton()));
+        }
+
         markup.setKeyboard(keyboard);
         return markup;
     }
@@ -314,9 +351,9 @@ public class MenuManager {
     private InlineKeyboardButton myOrderListButton() {
         InlineKeyboardButton button = new InlineKeyboardButton();
         button.setText("Мои заказы");
-        Action action = new Action();
-        action.setName(OPEN_MY_ORDER_LIST);
-        String clbData = marshalFactory.<Action>marshal(action, ClsDocType.ACTION);
+        String clbData = new ActionBuilder(marshalFactory)
+                .setName(OPEN_MY_ORDER_LIST)
+                .asString();
         button.setCallbackData(clbData);
         return button;
     }
@@ -324,9 +361,19 @@ public class MenuManager {
     private InlineKeyboardButton appointOrderListButton() {
         InlineKeyboardButton button = new InlineKeyboardButton();
         button.setText("Ко мне записаны");
-        Action action = new Action();
-        action.setName(OPEN_MY_APPOINT_ORDER_LIST);
-        String clbData = marshalFactory.<Action>marshal(action, ClsDocType.ACTION);
+        String clbData = new ActionBuilder(marshalFactory)
+                .setName(OPEN_MY_APPOINT_ORDER_LIST)
+                .asString();
+        button.setCallbackData(clbData);
+        return button;
+    }
+
+    private InlineKeyboardButton appointAllOrderListButton() {
+        InlineKeyboardButton button = new InlineKeyboardButton();
+        button.setText("Записаны к мастерам");
+        String clbData = new ActionBuilder(marshalFactory)
+                .setName(OPEN_ALL_APPOINT_ORDER_LIST)
+                .asString();
         button.setCallbackData(clbData);
         return button;
     }
@@ -334,9 +381,9 @@ public class MenuManager {
     private InlineKeyboardButton employeeListButton() {
         InlineKeyboardButton button = new InlineKeyboardButton();
         button.setText("Выбрать мастера");
-        Action action = new Action();
-        action.setName(OPEN_EMPLOYEE_LIST);
-        String clbData = marshalFactory.<Action>marshal(action, ClsDocType.ACTION);
+        String clbData = new ActionBuilder(marshalFactory)
+                .setName(OPEN_EMPLOYEE_LIST)
+                .asString();
         button.setCallbackData(clbData);
         return button;
     }
@@ -344,9 +391,9 @@ public class MenuManager {
     private InlineKeyboardButton sheduleListButton() {
         InlineKeyboardButton button = new InlineKeyboardButton();
         button.setText("Выбрать время записи");
-        Action action = new Action();
-        action.setName(OPEN_SHEDULE);
-        String clbData = marshalFactory.<Action>marshal(action, ClsDocType.ACTION);
+        String clbData = new ActionBuilder(marshalFactory)
+                .setName(OPEN_SHEDULE)
+                .asString();
         button.setCallbackData(clbData);
         return button;
     }
@@ -354,9 +401,9 @@ public class MenuManager {
     private InlineKeyboardButton serviceListButton() {
         InlineKeyboardButton button = new InlineKeyboardButton();
         button.setText("Выбрать услугу");
-        Action action = new Action();
-        action.setName(OPEN_SERVICE_LIST);
-        String clbData = marshalFactory.<Action>marshal(action, ClsDocType.ACTION);
+        String clbData = new ActionBuilder(marshalFactory)
+                .setName(OPEN_SERVICE_LIST)
+                .asString();
         button.setCallbackData(clbData);
         return button;
     }
@@ -370,12 +417,12 @@ public class MenuManager {
     }
 
     public InlineKeyboardButton buttonMain() {
-        InlineKeyboardButton button = new InlineKeyboardButton();
-        button.setText("Главное меню");
-        Action action = new Action();
-        action.setName(OPEN_MAIN);
-        String clbData = marshalFactory.<Action>marshal(action, ClsDocType.ACTION);
-        button.setCallbackData(clbData);
+        InlineKeyboardButton button = new InlineKeyboardButtonBuilder()
+                .setText("Главное меню")
+                .setCallbackData(new ActionBuilder(marshalFactory)
+                        .setName(OPEN_MAIN)
+                        .asString())
+                .build();
         return button;
     }
 

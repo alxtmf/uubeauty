@@ -7,6 +7,7 @@ package ru.p03.uubeauty.bot.info;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +27,9 @@ import ru.p03.uubeauty.bot.schema.Action;
 import ru.p03.uubeauty.AppEnv;
 import ru.p03.uubeauty.State;
 import ru.p03.uubeauty.StateHolder;
+import ru.p03.uubeauty.model.ClsEmployee;
+import ru.p03.uubeauty.model.repository.ClassifierRepository;
+import ru.p03.uubeauty.model.repository.ClassifierRepositoryImpl;
 import ru.p03.uubeauty.model.repository.RegScheduleRepositoryImpl;
 import ru.p03.uubeauty.util.UpdateUtil;
 
@@ -58,12 +62,16 @@ public class ScheduleInfoManager {
     private final StateHolder stateHolder;
 
     private final RegScheduleRepositoryImpl regScheduleRepository;
+    private final ClassifierRepositoryImpl classifierRepository;
 
-    public ScheduleInfoManager(RegScheduleRepositoryImpl regScheduleRepository, LocalDateTime now, DocumentMarshalerAggregator marshalFactory, StateHolder stateHolder) {
+    public ScheduleInfoManager(ClassifierRepository classifierRepository, 
+            RegScheduleRepositoryImpl regScheduleRepository, LocalDateTime now, 
+            DocumentMarshalerAggregator marshalFactory, StateHolder stateHolder) {
         this.now = now;
         this.marshalFactory = marshalFactory;
         this.stateHolder = stateHolder;
         this.regScheduleRepository = regScheduleRepository;
+        this.classifierRepository = (ClassifierRepositoryImpl)classifierRepository;
     }
 
     private InlineKeyboardButton dayToButton(User from, LocalDateTime ldt) {
@@ -114,10 +122,22 @@ public class ScheduleInfoManager {
         if (ld.compareTo(now.toLocalDate()) == 0) {
             minHourDate = now.getHour() > minHourDate ? (now.getHour() + 1) : minHour;
         }
+        
+        State emplState = stateHolder.getLast(update, EmployeeManager.SELECT_EMPLOYEE);
+        final ClsEmployee employee = classifierRepository.find(ClsEmployee.class, Long.decode(emplState.getAction().getValue()));
 
-        LongStream.rangeClosed(minHourDate, maxHour).forEach((i) -> {
-            h.add(i);
-        });
+        if (employee == null){
+            LongStream.rangeClosed(minHourDate, maxHour).forEach((i) -> {
+                h.add(i);
+            });
+        }else{
+            LongStream.rangeClosed(minHourDate, maxHour).forEach((i) -> {
+                LocalDateTime ldt = LocalDateTime.of(ld, LocalTime.of((int)i, 0));
+                if (regScheduleRepository.isFree(employee, ldt)){
+                    h.add(i);
+                }
+            });
+        }
         return h;
     }
 

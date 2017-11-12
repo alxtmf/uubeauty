@@ -13,6 +13,7 @@ import ru.p03.uubeauty.bot.schema.Action;
  *
  * @author timofeevan
  */
+@Deprecated
 public class ActionBuilder {
     
     private final Action action;

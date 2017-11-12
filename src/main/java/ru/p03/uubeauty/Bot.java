@@ -92,7 +92,8 @@ public class Bot extends TelegramLongPollingBot {
                 return;
             }
             
-            ScheduleInfoManager sim = new ScheduleInfoManager(AppEnv.getContext().getRegScheduleRepository(),
+            ScheduleInfoManager sim = new ScheduleInfoManager(AppEnv.getContext().getClassifierRepository(),
+                    AppEnv.getContext().getRegScheduleRepository(),
                     LocalDateTime.now(), AppEnv.getContext().getMarschaller(), 
                     AppEnv.getContext().getStateHolder());
             answerMessage = sim.processCallbackQuery(update);

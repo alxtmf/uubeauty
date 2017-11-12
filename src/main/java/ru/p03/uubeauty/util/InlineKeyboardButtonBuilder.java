@@ -4,9 +4,10 @@
  * and open the template in the editor.
  */
 
-package ru.p03.uubeauty;
+package ru.p03.uubeauty.util;
 
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import ru.p03.uubeauty.bot.schema.Action;
 
 /**
  *
@@ -19,6 +20,7 @@ public class InlineKeyboardButtonBuilder {
     public InlineKeyboardButtonBuilder(){
         this.button = new InlineKeyboardButton();
     }
+
     
     public InlineKeyboardButtonBuilder setText(String text){
         button.setText(text);
@@ -30,7 +32,7 @@ public class InlineKeyboardButtonBuilder {
         return this;
     }
     
-    public InlineKeyboardButton toButton(){
+    public InlineKeyboardButton build(){
         return button;
     }
 }
