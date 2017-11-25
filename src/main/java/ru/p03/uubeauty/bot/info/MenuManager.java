@@ -20,6 +20,7 @@ import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.User;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import ru.p03.common.util.DateUtil;
 import ru.p03.common.util.FormatUtils;
 import ru.p03.uubeauty.Bot;
 import ru.p03.uubeauty.EmployeeSender;
@@ -295,7 +296,9 @@ public class MenuManager {
         ClsEmployee employee = classifierRepository.find(ClsEmployee.class, Long.decode(emplState.getAction().getValue()));
         ClsService service = classifierRepository.find(ClsService.class, Long.decode(servState.getAction().getValue()));
 
-        String text = "Вы записаны на " + dateState.getAction().getValue() + " " + hourState.getAction().getValue()
+        String text = "Вы записаны на " + FormatUtils.formatAsDDMMYYY(
+                DateUtil.transformDate(dateState.getAction().getValue(), "yyyy-MM-dd"))
+                + " в " + FormatUtils.formatAsHH00(hourState.getAction().getValue())
                 + " к " + employee.getFamiliaIO() + " на " + service.getName();
 
         return text;
@@ -318,11 +321,11 @@ public class MenuManager {
     }
 
     public InlineKeyboardMarkup keyboard(Update update) {
-        return keyboard(update, true, true, true);
+        return keyboard(update, true, true, true, true, true);
     }
 
-    public InlineKeyboardMarkup keyboard(Update update,
-            boolean showEmployeeList, boolean showSheduleList, boolean showServiceList) {
+    public InlineKeyboardMarkup keyboard(Update update, boolean showEmployeeList, 
+            boolean showSheduleList, boolean showServiceList, boolean showOrderInfo, boolean showMainButton) {
         final InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
         if (showEmployeeList) {
@@ -335,13 +338,19 @@ public class MenuManager {
             keyboard.add(Arrays.asList(serviceListButton()));
         }
 
-        keyboard.add(Arrays.asList(myOrderListButton()));
-        ClsEmployee finded = classifierRepository.findEmployee(UpdateUtil.getUserFromUpdate(update).getId());
-        if (finded != null && regUseRoleRepository.hasRole(finded, ClsRole.EMPLOYEE)) {
-            keyboard.add(Arrays.asList(appointOrderListButton()));
+        if (showOrderInfo) {
+            keyboard.add(Arrays.asList(myOrderListButton()));
+            ClsEmployee finded = classifierRepository.findEmployee(UpdateUtil.getUserFromUpdate(update).getId());
+            if (finded != null && regUseRoleRepository.hasRole(finded, ClsRole.EMPLOYEE)) {
+                keyboard.add(Arrays.asList(appointOrderListButton()));
+            }
+            if (finded != null && regUseRoleRepository.hasRole(finded, ClsRole.ADMIN)) {
+                keyboard.add(Arrays.asList(appointAllOrderListButton()));
+            }
         }
-        if (finded != null && regUseRoleRepository.hasRole(finded, ClsRole.ADMIN)) {
-            keyboard.add(Arrays.asList(appointAllOrderListButton()));
+        
+        if (showMainButton){
+            keyboard.add(Arrays.asList(buttonMain()));
         }
 
         markup.setKeyboard(keyboard);

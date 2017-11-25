@@ -235,7 +235,7 @@ public class ScheduleInfoManager {
                             + "\n<b>Осталось подтвердить запись</b>");
                 } else {
                     markup = AppEnv.getContext().getMenuManager().keyboard(update,
-                            !isEmployeeSelect, false, !isServiceSelect);
+                            !isEmployeeSelect, false, !isServiceSelect, false, true);
                     answerMessage.setText("Вы выбрали " + action.getValue()
                             + "\n<b>Продолжаем:</b>");
 

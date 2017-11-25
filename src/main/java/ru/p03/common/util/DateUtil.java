@@ -130,6 +130,11 @@ public class DateUtil {
         SimpleDateFormat sdf = new SimpleDateFormat(XML_DATE_FORMAT);
         return sdf.parse(date, new ParsePosition(0));
     }
+    
+    public static Date transformDate(String date, String dateFormat) {
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+        return sdf.parse(date, new ParsePosition(0));
+    }
 
     public static boolean isValid(String dateToValidate) {
         return isValid(dateToValidate, XML_DATE_FORMAT);

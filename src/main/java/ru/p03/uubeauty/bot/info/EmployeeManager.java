@@ -122,7 +122,7 @@ public class EmployeeManager {
                             + "\n<b>Осталось подтвердить запись</b>");
                 } else {
                     markup = AppEnv.getContext().getMenuManager().keyboard(update, 
-                            false, !isSheduleSelect, !isServiceSelect);
+                            false, !isSheduleSelect, !isServiceSelect, false, true);
                     
                     ClsEmployee employee = classifierRepository.find(ClsEmployee.class, Long.decode(action.getValue()));
                     
